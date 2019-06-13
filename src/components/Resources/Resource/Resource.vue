@@ -1,7 +1,7 @@
 <template>
 	<div class="resource">
 		<resource-resource-name :name="resourceObj.name" :job="resourceObj.role" :contractType="resourceObj.contractType"></resource-resource-name>
-		<resource-weekly-grid class="resource-weekly-grid" :tasks="resourceObj.assignedTasksCurrentWeek" @openTaskDetails="test">
+		<resource-weekly-grid class="resource-weekly-grid" :tasks="resourceObj.assignedTasksCurrentWeek" @openTaskDetails="handleTaskClick">
 	    </resource-weekly-grid>
 	</div>
 </template>
@@ -17,11 +17,10 @@
 			ResourceWeeklyGrid: WeeklyGrid
 		},
 		methods: {
-			test: function() {
-				console.log("Click received");
+			handleTaskClick: function(task){
+				console.log(task);
 			}
 		}
-
 	}
 </script>
 

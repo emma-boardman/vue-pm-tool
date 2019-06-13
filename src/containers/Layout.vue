@@ -20,7 +20,8 @@ import AddTask from '../components/AddTask/AddTask.vue'
 export default {
 	data: function(){
 		return {
-			show: false
+			show: false,
+			showTaskDetails: false
 		}
 	},
 	components: {
@@ -36,6 +37,10 @@ export default {
 		},
 		handleModalOpen: function(){
 			this.show = true;
+		},
+		handleTaskClick: function(task){
+			this.showTaskDetails = true;
+			console.log(task.taskTitle);
 		}
 
 	}

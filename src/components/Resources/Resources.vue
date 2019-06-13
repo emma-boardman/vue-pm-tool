@@ -14,6 +14,7 @@
 	export default {
 		data: function() {
 			return {
+			task: '',
 			resources: [
 				 {
 					id: "001",
@@ -154,7 +155,7 @@
 },
 		components: {
 			ResourcesResourceRow: Resource
-		} 
+		}
 	}
 
 </script>

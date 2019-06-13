@@ -1,7 +1,6 @@
 <template>
 	<div class="weekly-grid">
 			<weekly-grid-day-date v-for="day in currentWeek" :key="day" class="weekday" :class="day.replace(/ .*/,'').toLowerCase()">{{ day }}</weekly-grid-day-date>
-		
 				 <weekly-grid-task 
 				 	v-for="task in tasks" 
 				 	key="task.taskid"
@@ -11,10 +10,7 @@
 				 	<p class="clientName" v-if="task.estimatedHours > 3">{{ task.clientName }}</p>
 				 	<p class="clientName" v-else>{{ task.clientCode }}</p>
 				 	<p class="title" v-if="task.estimatedHours > 3">{{ task.taskTitle }}</p>
-				 	<p class="title" v-else>( ... )</p>
-
-				 	
-					
+				 	<p class="title" v-else>( ... )</p>	
 				 </weekly-grid-task>
 	</div>
 </template>

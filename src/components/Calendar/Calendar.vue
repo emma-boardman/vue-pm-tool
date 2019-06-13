@@ -2,7 +2,7 @@
 	<div class="scrolling-wrapper">
 		<div class="wrapper">
 			<calendar-row-headers></calendar-row-headers>
-			<calendar-resources></calendar-resources>
+			<calendar-resources @openTaskDetails="$emit('openTaskDetails', task)"></calendar-resources>
 		</div>
 	</div>
 </template>
