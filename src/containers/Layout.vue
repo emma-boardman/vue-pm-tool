@@ -1,11 +1,16 @@
 <template>
 	<div>
-		<layout-modal :if="show" @closeModal="handleModalClose" :showModal="show">
-			<layout-add-task></layout-add-task>
+		<layout-modal :if="showTaskAdd" @closeModal="handleAddModalClose" :showModal="showTaskAdd">
+			<layout-task-add></layout-task-add>
+		</layout-modal>
+		<layout-modal :if="showTaskDetail" @closeModal="handleDetailModalClose" :showModal="showTaskDetail">
+			<layout-task-detail>
+				<p>{{ taskDetail.taskTitle }}</p>
+			</layout-task-detail>
 		</layout-modal>
 		<layout-header></layout-header>
 		<layout-calendar></layout-calendar>
-		<layout-footer @openModal="handleModalOpen"></layout-footer>
+		<layout-footer @openModal="handleAddModalOpen"></layout-footer>
 	</div>
 </template>
 
@@ -16,33 +21,43 @@ import Calendar from '../components/Calendar/Calendar.vue'
 import Footer from '../components/Footer/Footer.vue'
 import Modal from '../components/UI/Modal/Modal.vue'
 import TaskAdd from '../components/Task/TaskAdd/TaskAdd.vue'
+import TaskDetail from '../components/Task/TaskDetail/TaskDetail.vue'
 import { EventBus } from '../event-bus.js'
 
 export default {
 	data: function(){
 		return {
-			show: false
+			showTaskAdd: false,
+			showTaskDetail: false,
+			taskDetail: {}
 		}
 	},
 	mounted() {
-		EventBus.$on('showTaskDetails', task => {
-			console.log("AM I REAL? " + task.taskid);
-		});
+		EventBus.$on('showTaskDetails', this.handleTaskDetails); 
 	},
 	components: {
 		layoutHeader: Header,
 		layoutCalendar: Calendar,
 		layoutFooter: Footer,
 		layoutModal: Modal,
-		layoutAddTask: TaskAdd
+		layoutTaskAdd: TaskAdd,
+		layoutTaskDetail: TaskDetail
 	},
 	methods: {
-		handleModalClose: function(){
-			this.show = false;
+		handleAddModalClose: function(){
+			this.showTaskAdd = false;
 		},
-		handleModalOpen: function(){
-			this.show = true;
-		}
+		handleAddModalOpen: function(){
+			this.showTaskAdd = true;
+		},
+		handleTaskDetails: function(task){
+			this.showTaskDetail = true;
+			this.taskDetail = task;
+
+		},
+		handleDetailModalClose: function(){
+			this.showTaskDetail = false;
+		},
 	}
 }
 
