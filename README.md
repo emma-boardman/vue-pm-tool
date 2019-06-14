@@ -1,6 +1,6 @@
 # vue-mvp
 
-The aim of the project is to critically evaluate the comparative adaptability and modifiability of React.js, Vue.js, and Angular.js by first implementing a Minimum Viable Product (MVP) using each framework, and subsequently introducing change requests to assess the impact. For more project information, please visit: http://www.emmaboardman.co.uk/portfolio/casestudyDissertation.html 
+The aim of the project is to critically evaluate the comparative adaptability and modifiability of React.js and Vue.js by first implementing a Minimum Viable Product (MVP) using each framework, and subsequently introducing change requests to assess the impact. For more project information, please visit: http://www.emmaboardman.co.uk/portfolio/casestudyDissertation.html 
 
 The MVP is still in progress, but it working towards the below design / features / user stories / requirements / acceptance criteria. 
 
