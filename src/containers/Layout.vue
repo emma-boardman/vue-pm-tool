@@ -15,21 +15,26 @@ import Header from '../components/Header/Header.vue'
 import Calendar from '../components/Calendar/Calendar.vue'
 import Footer from '../components/Footer/Footer.vue'
 import Modal from '../components/UI/Modal/Modal.vue'
-import AddTask from '../components/AddTask/AddTask.vue'
+import TaskAdd from '../components/Task/TaskAdd/TaskAdd.vue'
+import { EventBus } from '../event-bus.js'
 
 export default {
 	data: function(){
 		return {
-			show: false,
-			showTaskDetails: false
+			show: false
 		}
+	},
+	mounted() {
+		EventBus.$on('showTaskDetails', task => {
+			console.log("AM I REAL? " + task.taskid);
+		});
 	},
 	components: {
 		layoutHeader: Header,
 		layoutCalendar: Calendar,
 		layoutFooter: Footer,
 		layoutModal: Modal,
-		layoutAddTask: AddTask
+		layoutAddTask: TaskAdd
 	},
 	methods: {
 		handleModalClose: function(){
@@ -37,12 +42,7 @@ export default {
 		},
 		handleModalOpen: function(){
 			this.show = true;
-		},
-		handleTaskClick: function(task){
-			this.showTaskDetails = true;
-			console.log(task.taskTitle);
 		}
-
 	}
 }
 

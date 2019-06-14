@@ -5,19 +5,21 @@
 				 	v-for="task in tasks" 
 				 	key="task.taskid"
 				 	class="task"
-				 	@click.native="$emit('openTaskDetails', task)"
+				 	@click.native="emitTaskDetails(task)"
 				 	:style="generateTaskClasses(task)">
-				 	<p class="clientName" v-if="task.estimatedHours > 3">{{ task.clientName }}</p>
-				 	<p class="clientName" v-else>{{ task.clientCode }}</p>
-				 	<p class="title" v-if="task.estimatedHours > 3">{{ task.taskTitle }}</p>
-				 	<p class="title" v-else>( ... )</p>	
+					 	<p class="clientName" v-if="task.estimatedHours > 3">{{ task.clientName }}</p>
+					 	<p class="clientName" v-else>{{ task.clientCode }}</p>
+					 	<p class="title" v-if="task.estimatedHours > 3">{{ task.taskTitle }}</p>
+					 	<p class="title" v-else>( ... )</p>	
 				 </weekly-grid-task>
+
 	</div>
 </template>
 
 <script>
 	import DayDate from './DayDate/DayDate.vue'
 	import Task from '../../Task/Task.vue'
+	import { EventBus } from '../../../event-bus.js'
 
 	export default {
 		props: ['tasks'],
@@ -112,6 +114,9 @@
 					marginRight: marginRight
 				}
 			   return dynamicStyles;
+			},
+			emitTaskDetails: function(task){
+				EventBus.$emit('showTaskDetails', task)
 			}
 		}
 	}
