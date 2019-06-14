@@ -4,8 +4,7 @@
 			<layout-task-add></layout-task-add>
 		</layout-modal>
 		<layout-modal :if="showTaskDetail" @closeModal="handleDetailModalClose" :showModal="showTaskDetail">
-			<layout-task-detail>
-				<p>{{ taskDetail.taskTitle }}</p>
+			<layout-task-detail :task=taskDetail>
 			</layout-task-detail>
 		</layout-modal>
 		<layout-header></layout-header>
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-
 import Header from '../components/Header/Header.vue'
 import Calendar from '../components/Calendar/Calendar.vue'
 import Footer from '../components/Footer/Footer.vue'
@@ -60,11 +58,8 @@ export default {
 		},
 	}
 }
-
-
-
 </script>
 
-<style>
+<style scoped>
 
 </style>
