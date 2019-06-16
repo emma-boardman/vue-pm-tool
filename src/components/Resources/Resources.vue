@@ -1,20 +1,29 @@
 <template>
-	<div class="resources">
-		<resources-resource-row 
+	<div v-if="isDataLoaded" class="resources">
+		<!-- <resources-resource-row 
 			v-for="resource in resources" 
 			:key="resource.name"
 			:resourceObj="resource"
+			></resources-resource-row> -->
+			<resources-resource-row 
+			v-for="resource in info" 
+			:key="resource.resourceId"
+			:resourceObj="resource"
 			></resources-resource-row>
+			
 	</div>
 </template>
 
 <script>
 	import Resource from './Resource/Resource.vue'
+	import axios from 'axios';
 
 	export default {
 		data: function() {
 			return {
 			task: '',
+			info: null,
+			isDataLoaded: false,
 			resources: [
 				 {
 					id: "001",
@@ -153,6 +162,15 @@
 		]
 	}
 },
+	mounted(){
+			axios
+			.get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
+			.then(response => {
+				this.info = response.data.data;
+				this.isDataLoaded = true;
+			})
+			.catch(error => console.log(error))
+		},
 		components: {
 			ResourcesResourceRow: Resource
 		}

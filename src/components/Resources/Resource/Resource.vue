@@ -1,7 +1,7 @@
 <template>
 	<div class="resource">
-		<resource-resource-name :name="resourceObj.name" :job="resourceObj.role" :contractType="resourceObj.contractType"></resource-resource-name>
-		<resource-weekly-grid class="resource-weekly-grid" :tasks="resourceObj.assignedTasksCurrentWeek" @openTaskDetails="handleTaskClick">
+		<resource-resource-name :name="resourceObj.resourceName" :job="resourceObj.resourceJobTitle" :contractType="resourceObj.resourceContractType"></resource-resource-name>
+		<resource-weekly-grid class="resource-weekly-grid" :tasks="resourceObj.tasks" @openTaskDetails="handleTaskClick">
 	    </resource-weekly-grid>
 	</div>
 </template>

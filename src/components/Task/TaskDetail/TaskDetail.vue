@@ -6,13 +6,13 @@
 		</div>
 		<div class="task-detail__task-content">
 			<p class="task-detail__task-content__task-title">
-				{{ task.taskTitle }} <span class="task-detail__task-content--impact" :style="generateImpactColourClasses(task.impact)">{{ task.impact}}</span></p>
+				{{ task.taskTitle }} <span class="task-detail__task-content--impact" :style="generateImpactColourClasses(task.taskImpact)">{{ task.taskImpact}}</span></p>
 			<dl>
-				<dt>Project</dt><dd> {{ task.projectName }}</dd>
+				<dt>Project</dt><dd> {{ task.projectTitle }}</dd>
 				<dt>Error</dt>
-				<dd>{{ task.error }}</dd>
+				<dd>{{ task.taskErroneousBehaviour}}</dd>
 				<dt>Scheduled for</dt>
-				<dd>{{ task.startDayTime }} - {{ task.endDayTime }}</dd>
+				<dd>{{ task.taskStartTime }} - {{ task.taskEndTime }}</dd>
 			</dl>
 			
 		</div>

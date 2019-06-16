@@ -3,13 +3,13 @@
 			<weekly-grid-day-date v-for="day in currentWeek" :key="day" class="weekday" :class="day.replace(/ .*/,'').toLowerCase()">{{ day }}</weekly-grid-day-date>
 				 <weekly-grid-task 
 				 	v-for="task in tasks" 
-				 	:key="task.taskid"
+				 	:key="task.taskId"
 				 	class="task"
 				 	@click.native="emitTaskDetails(task)"
 				 	:style="generateTaskClasses(task)">
-					 	<p class="clientName" v-if="task.estimatedHours > 3">{{ task.clientName }}</p>
+					 	<p class="clientName" v-if="task.taskEstimate > 3">{{ task.clientName }}</p>
 					 	<p class="clientName" v-else>{{ task.clientCode }}</p>
-					 	<p class="title" v-if="task.estimatedHours > 3">{{ task.taskTitle }}</p>
+					 	<p class="title" v-if="task.taskEstimate > 3">{{ task.taskAffectedArea }}</p>
 					 	<p class="title" v-else>( ... )</p>	
 				 </weekly-grid-task>
 
@@ -89,16 +89,16 @@
 			generateTaskClasses(task){
 				let color;
 					switch(task.clientName) {
-						case 'Client A': 
+						case 'Delos': 
 							color = "#C6F400";
 							break;
-						case 'Client B': 
+						case 'Shogun World': 
 							color = "#F48A18"; 
 							break;
-						case 'Client C': 
+						case 'Ford': 
 							color = "#B087FF";
 							break;
-						case 'Client D': 
+						case 'Logan': 
 							color = "#1DA4C1";
 							break;
 						default: 
@@ -106,11 +106,11 @@
 							break;
 					}
 				let marginRight;
-				task.endDayTime.includes(1700) ? marginRight = '5px' : marginRight = '0';
+				task.taskEndTime.includes(1700) ? marginRight = '5px' : marginRight = '0';
 				let dynamicStyles = {
 					backgroundColor: color, 
-					gridColumnStart: task.startDayTime, 
-					gridColumnEnd: task.endDayTime,
+					gridColumnStart: task.taskStartTime, 
+					gridColumnEnd: task.taskEndTime,
 					marginRight: marginRight
 				}
 			   return dynamicStyles;

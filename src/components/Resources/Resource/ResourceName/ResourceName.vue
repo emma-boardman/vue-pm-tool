@@ -14,7 +14,6 @@
 
 <style>
 .resource-name {
-	// padding: 5% 1%;
 	background-color: transparent;
 	width: var(--left-column-width);
 	box-sizing: border-box;
