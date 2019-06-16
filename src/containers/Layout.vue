@@ -3,8 +3,8 @@
 		<layout-modal :if="showTaskAdd" @closeModal="handleAddModalClose" :showModal="showTaskAdd">
 			<layout-task-add></layout-task-add>
 		</layout-modal>
-		<layout-modal :if="showTaskDetail" @closeModal="handleDetailModalClose" :showModal="showTaskDetail">
-			<layout-task-detail :task=taskDetail>
+		<layout-modal :if="showTaskDetail" @closeModal="handleDetailModalClose" :showModal="showTaskDetail" class="modal-task-detail">
+			<layout-task-detail :task=taskDetail @closeModal="handleDetailModalClose">
 			</layout-task-detail>
 		</layout-modal>
 		<layout-header></layout-header>
@@ -61,5 +61,10 @@ export default {
 </script>
 
 <style scoped>
+
+.modal-task-detail >>> .modal {
+	padding: 0;
+	border: var(--dark-grey) solid 1px;
+}
 
 </style>

@@ -40,7 +40,7 @@
 							clientCode: "ClntB",
 							taskTitle: "Tablet layout improvements",
 							error: "Banners extending off page on iPad 2.2",
-							impact: "low",
+							impact: "high",
 							startDayTime: "Mon1300",
 							endDayTime: "Mon1700",
 							estimatedHours: "4"

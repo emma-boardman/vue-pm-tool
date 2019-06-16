@@ -3,7 +3,7 @@
 			<weekly-grid-day-date v-for="day in currentWeek" :key="day" class="weekday" :class="day.replace(/ .*/,'').toLowerCase()">{{ day }}</weekly-grid-day-date>
 				 <weekly-grid-task 
 				 	v-for="task in tasks" 
-				 	key="task.taskid"
+				 	:key="task.taskid"
 				 	class="task"
 				 	@click.native="emitTaskDetails(task)"
 				 	:style="generateTaskClasses(task)">
