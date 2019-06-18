@@ -42,7 +42,8 @@ export default {
 			showTaskDetail: false,
 			taskDetail: {},
 			taskAddFormPresets: {},
-			isTaskPresetsLoaded: false
+			isTaskPresetsLoaded: false,
+			taskAvailability: {}
 		}
 	},
 	created() {
@@ -81,8 +82,10 @@ export default {
 		handleFormSubmission: function(task){
 			console.log(task);
 		},
-		handleResourceAvailability: function(resourceId, estimate){
-			console.log(resourceId, estimate);
+		handleResourceAvailability: function(resourceAndEstimate){
+			console.log("resourceId: " + resourceAndEstimate.resourceId);
+
+			this.getResourceSchedule(resourceAndEstimate.resourceId);
 			const weeklyAvailability = Array(9).fill(true);
 			const weeklyTimeSlots = [
 				"Mon0900",
@@ -110,13 +113,13 @@ export default {
 			console.log("ending availability:" + weeklyAvailability)
 
 			const estimateArray = Array(estimatedTime).fill(true);
-			let indexOfFirstAvailability = this.findSubarray(weeklyAvailability, estimateArray);
+			let indexOfFirstAvailability = this.findAvailability(weeklyAvailability, estimateArray);
 			const possibleStartTime = (weeklyTimeSlots[indexOfFirstAvailability]);
 			const possibleEndTime = (weeklyTimeSlots[indexOfFirstAvailability + estimatedTime]);
-			console.log(possibleStartTime + " - " + possibleEndTime);
-		
+			
+
 		},
-		findSubarray(arr, subarr) {
+		findAvailability(arr, subarr) {
     	for (var i = 0; i < 1 + (arr.length - subarr.length); i++) {
         var j = 0;
         for (; j < subarr.length; j++)
@@ -126,6 +129,16 @@ export default {
             return i;
 			}
 			return -1;
+		},
+		getResourceSchedule(resourceId){
+			const url = "http://40414669.wdd.napier.ac.uk/inc/readResourceSchedule.php/?id=" + resourceId;
+			console.log(url);
+			axios
+			.get(url)
+			.then(response => {
+				console.log("response data: " + response.data.data)
+				this.taskAvailability = response.data;
+			});
 		}
 	}
 }
