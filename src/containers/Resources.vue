@@ -1,10 +1,5 @@
 <template>
 	<div v-if="isDataLoaded" class="resources">
-		<!-- <resources-resource-row 
-			v-for="resource in resources" 
-			:key="resource.name"
-			:resourceObj="resource"
-			></resources-resource-row> -->
 			<resources-resource-row 
 			v-for="resource in info" 
 			:key="resource.resourceId"

@@ -2,6 +2,8 @@
 	<div class="add-task">
 	<h2>Add New Task</h2>
 
+	{{ projects }}
+
 	<form>
 		<ul class="form-wrapper">
 			<li class="form-row">
@@ -71,7 +73,31 @@
 
 </template>
 
-<script></script>
+<script>
+	export default {
+		props: ['formPresets'],
+		data() {
+			return {
+			}
+		},
+		computed: {
+		projects: function() {
+				let eh = this.formPresets["clientProjects"].reduce(function (formPresetsArray, clientObj){
+					for (let j = 0; j < clientObj.projects.length; j++){
+						let clientObject = {
+							clientName: clientObj.clientName,
+							projectName: clientObj.projects[j].projectTitle,
+							projectId: clientObj.projects[j].projectId
+						}
+						formPresetsArray.push(clientObject);
+					}
+					return formPresetsArray;
+				}, []);
+				return eh;
+			}
+		}
+	}
+</script>
 
 <style scoped>
 .add-task {

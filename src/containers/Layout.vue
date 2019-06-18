@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<layout-modal :if="showTaskAdd" @closeModal="handleAddModalClose" :showModal="showTaskAdd">
-			<layout-task-add></layout-task-add>
+		<layout-modal :if="showTaskAdd" @closeModal="handleTaskAddModalClose" :showModal="showTaskAdd">
+			<layout-task-add :formPresets=taskAddFormPresets></layout-task-add>
 		</layout-modal>
-		<layout-modal :if="showTaskDetail" @closeModal="handleDetailModalClose" :showModal="showTaskDetail" class="modal-task-detail">
-			<layout-task-detail :task=taskDetail @closeModal="handleDetailModalClose">
+		<layout-modal :if="showTaskDetail" @closeModal="handleTaskDetailModalClose" :showModal="showTaskDetail" class="modal-task-detail">
+			<layout-task-detail :task=taskDetail @closeModal="handleTaskDetailModalClose">
 			</layout-task-detail>
 		</layout-modal>
 		<layout-header></layout-header>
 		<layout-calendar></layout-calendar>
-		<layout-footer @openModal="handleAddModalOpen"></layout-footer>
+		<layout-footer @openModal="handleTaskAddModalOpen"></layout-footer>
 	</div>
 </template>
 
@@ -21,17 +21,27 @@ import Modal from '../components/UI/Modal/Modal.vue'
 import TaskAdd from '../components/Task/TaskAdd/TaskAdd.vue'
 import TaskDetail from '../components/Task/TaskDetail/TaskDetail.vue'
 import { EventBus } from '../event-bus.js'
+import axios from 'axios'
 
 export default {
 	data: function(){
 		return {
 			showTaskAdd: false,
 			showTaskDetail: false,
-			taskDetail: {}
+			taskDetail: {},
+			taskAddFormPresets: {},
+			isTaskPresetsLoaded: false
 		}
 	},
 	mounted() {
-		EventBus.$on('showTaskDetails', this.handleTaskDetails); 
+		EventBus.$on('showTaskDetails', this.handleTaskDetailsModalOpen);
+		axios
+		.get('http://40414669.wdd.napier.ac.uk/inc/readAddTaskOptions.php')
+		.then(response => {
+			this.taskAddFormPresets = response.data;
+			this.isTaskPresetsLoaded = true
+		})
+		.catch(error => console.log(error))
 	},
 	components: {
 		layoutHeader: Header,
@@ -42,18 +52,18 @@ export default {
 		layoutTaskDetail: TaskDetail
 	},
 	methods: {
-		handleAddModalClose: function(){
+		handleTaskAddModalClose: function(){
 			this.showTaskAdd = false;
 		},
-		handleAddModalOpen: function(){
+		handleTaskAddModalOpen: function(){
 			this.showTaskAdd = true;
 		},
-		handleTaskDetails: function(task){
+		handleTaskDetailsModalOpen: function(task){
 			this.showTaskDetail = true;
 			this.taskDetail = task;
 
 		},
-		handleDetailModalClose: function(){
+		handleTaskDetailModalClose: function(){
 			this.showTaskDetail = false;
 		},
 	}
