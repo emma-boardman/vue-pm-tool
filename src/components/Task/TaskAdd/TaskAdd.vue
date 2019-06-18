@@ -2,17 +2,15 @@
 	<div class="add-task">
 	<h2>Add New Task</h2>
 
-	{{ projects }}
-
 	<form>
 		<ul class="form-wrapper">
 			<li class="form-row">
 				<label for="projectId">Project</label>
-					<select>
-						<option value="projnoselection"></option>
-						<option value="proj1">Proj1</option>
-						<option value="proj2">Proj2</option>
-						<option value="proj3">Proj3</option>
+					<select
+							id="taskProject"
+							v-model="selectedProject"
+						>
+						<option v-for="project in projects" :key="project.projectId">{{ project.clientName + ": " + project.projectName }} </option>
 					</select>
 			</li>
 			<li class="form-row">
@@ -33,7 +31,10 @@
 			</li>
 			<li class="form-row">
 				<label for="taskImpact">Impact on business</label>
-				<input type="text" id="taskImpact" />
+				<select 
+						id="taskImpact"
+						v-model="selectedImpact" />
+				
 			</li>
 			<li class="form-row">
 				<label for="taskProblemSince">Time noticed</label>
@@ -78,6 +79,18 @@
 		props: ['formPresets'],
 		data() {
 			return {
+				taskProject: '',
+				taskTitle: '',
+				taskAffectedArea: '',
+				taskError: '',
+				taskExpected: '',
+				taskImpact: 'low',
+				taskTimeNoticed: '',
+				taskRecentChanges: '',
+				taskResource: '',
+				taskEstimate: '',
+				taskTimeSlot: '',
+				impactOptions: ['Low', 'High', 'Medium']
 			}
 		},
 		computed: {
