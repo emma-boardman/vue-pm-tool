@@ -1,61 +1,101 @@
 <template>
 	<div class="add-task">
 	<h2>Add New Task</h2>
-
-	<form>
+    
+	<form @submit.prevent="$emit('submitNewTask', task)"> 
 		<ul class="form-wrapper">
 			<li class="form-row">
 				<label for="projectId">Project</label>
 					<select
 							id="taskProject"
-							v-model="selectedProject"
+							v-model="task.taskProject"
+							required
 						>
-						<option v-for="project in projects" :key="project.projectId">{{ project.clientName + ": " + project.projectName }} </option>
+						<option v-for="project in projects" :key="project.projectId">
+							{{ project.clientName + ": " + project.projectName }} 
+						</option>
 					</select>
 			</li>
 			<li class="form-row">
 				<label for="taskTitle">Task Title</label>
-				<input type="text" id="taskTitle" />
+				<input 
+						type="text" 
+						id="taskTitle" 
+						v-model="task.taskTitle"
+						required />
 			</li>
 			<li class="form-row">
 				<label for="taskArea">Affected area</label>
-				<input type="text" id="taskArea" />
+				<input 
+						type="text" 
+						id="taskArea" 
+						v-model="task.taskAffectedArea"
+						required/>
 			</li>
 			<li class="form-row-text-area">
 				<label for="taskError">Erroneous behaviour</label>
-				<textarea />
+				<textarea 
+						id="taskError" 
+						v-model="task.taskError" 
+						required />
 			</li>
 				<li class="form-row-text-area">
-				<label for="taskNormal">Expected behaviour</label>
-				<textarea />
+				<label for="taskExpected">Expected behaviour</label>
+				<textarea 
+						id="taskExpected"
+						v-model="task.taskExpected"
+						required />
 			</li>
 			<li class="form-row">
 				<label for="taskImpact">Impact on business</label>
 				<select 
 						id="taskImpact"
-						v-model="selectedImpact" />
-				
+						v-model="task.taskImpact"
+						required>
+					<option v-for="impact in task.impactOptions" :key="impact">
+						{{ impact }}
+					</option>
+				</select>
+					
 			</li>
 			<li class="form-row">
-				<label for="taskProblemSince">Time noticed</label>
-				<input type="text" id="taskProblemSince" />
+				<label for="taskTimeNoticed">Time noticed</label>
+				<input 
+						type="text" 
+						id="taskTimeNoticed"
+						v-model="task.taskTimeNoticed"
+						required />
 			</li>
 			<li class="form-row">
 				<label for="taskRecentChanges">Recent Changes</label>
-				<input type="text" id="taskRecentChanges" />
+				<input 
+						type="text" 
+						id="taskRecentChanges"
+						v-model="task.taskRecentChanges" 
+						required />
 			</li>
 				<li class="form-row">
 				<label for="resourceId">Resource</label>
-					<select>
-						<option value="resourcenoselection"></option>
-						<option value="res1">Bernard</option>
-						<option value="res2">Dolores</option>
-						<option value="res3">Teddy</option>
+					<select 
+							id="resourceId"
+							v-model="task.taskResource"
+							required>
+						<option 
+							v-for="resource in formPresets['resources']" 
+							:key="resource.resourceId" 
+							:value="resource.resourceId">
+							{{ resource.resourceName }} 
+						</option>
 					</select>
 			</li>
 			<li class="form-row">
 				<label for="taskEstimate">Estimate</label>
-				<input type="text" id="taskEstimate" />
+				<input 
+						type="number" 
+						id="taskEstimate"
+						v-model="task.taskEstimate"
+						@blur="$emit('handleEstimate', {resourceId: task.taskResource, taskEstimate: task.taskEstimate})"
+						required />
 			</li>
 			<li class="form-row">
 				<label for="taskSchedule">Schedule Time Slot</label>
@@ -67,9 +107,10 @@
 					</select>
 			</li>
 		</ul>
-	</form>
-		<button class="add-task-btn">Add Task</button>
+		<button type="submit" class="add-task-btn">Add Task</button>
 		<p class="cancel-btn">Cancel</p>
+	</form>
+		
     </div>
 
 </template>
@@ -79,23 +120,31 @@
 		props: ['formPresets'],
 		data() {
 			return {
-				taskProject: '',
-				taskTitle: '',
-				taskAffectedArea: '',
-				taskError: '',
-				taskExpected: '',
-				taskImpact: 'low',
-				taskTimeNoticed: '',
-				taskRecentChanges: '',
-				taskResource: '',
-				taskEstimate: '',
-				taskTimeSlot: '',
-				impactOptions: ['Low', 'High', 'Medium']
+				task: {
+					taskProject: '',
+					taskTitle: '',
+					taskAffectedArea: '',
+					taskError: '',
+					taskExpected: '',
+					taskImpact: 'low',
+					taskTimeNoticed: '',
+					taskRecentChanges: '',
+					taskResource: '',
+					taskResourceId: '',
+					taskEstimate: '',
+					taskTimeSlot: '',
+					impactOptions: ['Low', 'High', 'Medium']
+				},
+				projects: []
 			}
 		},
 		computed: {
 		projects: function() {
-				let eh = this.formPresets["clientProjects"].reduce(function (formPresetsArray, clientObj){
+				return this.parseProjects();
+			}
+		},
+		created() {
+					let projectsArray = this.formPresets["clientProjects"].reduce(function (formPresetsArray, clientObj){
 					for (let j = 0; j < clientObj.projects.length; j++){
 						let clientObject = {
 							clientName: clientObj.clientName,
@@ -106,10 +155,9 @@
 					}
 					return formPresetsArray;
 				}, []);
-				return eh;
+				this.projects = projectsArray;
 			}
 		}
-	}
 </script>
 
 <style scoped>

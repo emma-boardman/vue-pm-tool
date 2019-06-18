@@ -9,7 +9,7 @@
 
 <script>
 	import ResourceName from './ResourceName/ResourceName.vue'
-	import WeeklyGrid from '../../Calendar/WeeklyGrid/WeeklyGrid.vue'
+	import WeeklyGrid from '../Calendar/WeeklyGrid/WeeklyGrid.vue'
 	export default {
 		props: ['resourceObj'],
 		components: {

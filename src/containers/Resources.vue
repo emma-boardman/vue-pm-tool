@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import Resource from './Resource/Resource.vue'
+	import Resource from '../components/Resource/Resource.vue'
 	import axios from 'axios';
 
 	export default {

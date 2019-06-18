@@ -9,7 +9,7 @@
 
 <script>
 	import RowHeaders from './RowHeaders/RowHeaders.vue'
-	import Resources from '../Resources/Resources.vue'
+	import Resources from '../../containers/Resources.vue'
 
 	export default {
 		components: {

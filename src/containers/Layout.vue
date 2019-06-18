@@ -1,10 +1,22 @@
 <template>
 	<div>
-		<layout-modal :if="showTaskAdd" @closeModal="handleTaskAddModalClose" :showModal="showTaskAdd">
-			<layout-task-add :formPresets=taskAddFormPresets></layout-task-add>
+		<layout-modal 
+				:if="showTaskAdd" 
+				@closeModal="handleTaskAddModalClose" 
+				:showModal="showTaskAdd">
+			<layout-task-add 
+				:formPresets=taskAddFormPresets 
+				@submitNewTask="handleFormSubmission"
+				@handleEstimate="handleResourceAvailability"></layout-task-add>
 		</layout-modal>
-		<layout-modal :if="showTaskDetail" @closeModal="handleTaskDetailModalClose" :showModal="showTaskDetail" class="modal-task-detail">
-			<layout-task-detail :task=taskDetail @closeModal="handleTaskDetailModalClose">
+		<layout-modal 
+				:if="showTaskDetail" 
+				@closeModal="handleTaskDetailModalClose" 
+				:showModal="showTaskDetail" 
+				class="modal-task-detail">
+			<layout-task-detail 
+					:task=taskDetail 
+					@closeModal="handleTaskDetailModalClose">
 			</layout-task-detail>
 		</layout-modal>
 		<layout-header></layout-header>
@@ -33,7 +45,7 @@ export default {
 			isTaskPresetsLoaded: false
 		}
 	},
-	mounted() {
+	created() {
 		EventBus.$on('showTaskDetails', this.handleTaskDetailsModalOpen);
 		axios
 		.get('http://40414669.wdd.napier.ac.uk/inc/readAddTaskOptions.php')
@@ -66,6 +78,55 @@ export default {
 		handleTaskDetailModalClose: function(){
 			this.showTaskDetail = false;
 		},
+		handleFormSubmission: function(task){
+			console.log(task);
+		},
+		handleResourceAvailability: function(resourceId, estimate){
+			console.log(resourceId, estimate);
+			const weeklyAvailability = Array(9).fill(true);
+			const weeklyTimeSlots = [
+				"Mon0900",
+				"Mon1000",
+				"Mon1100",
+				"Mon1200",
+				"Mon1300",
+				"Mon1400",
+				"Mon1500",
+				"Mon1600",
+				"Mon1700"
+			]
+			const startTime = "Mon0900";
+			const endTime = "Mon1100";
+			const estimatedTime = 2;
+
+			console.log("starting availability:" + weeklyAvailability)
+			// get index of array 
+			 for (let i = 0; i < weeklyTimeSlots.length; i++){
+				 if (weeklyTimeSlots[i] == startTime){
+					 for (let j = 0; j < estimatedTime; j ++)
+					 weeklyAvailability[i + j] = false;
+				 }
+			 }
+			console.log("ending availability:" + weeklyAvailability)
+
+			const estimateArray = Array(estimatedTime).fill(true);
+			let indexOfFirstAvailability = this.findSubarray(weeklyAvailability, estimateArray);
+			const possibleStartTime = (weeklyTimeSlots[indexOfFirstAvailability]);
+			const possibleEndTime = (weeklyTimeSlots[indexOfFirstAvailability + estimatedTime]);
+			console.log(possibleStartTime + " - " + possibleEndTime);
+		
+		},
+		findSubarray(arr, subarr) {
+    	for (var i = 0; i < 1 + (arr.length - subarr.length); i++) {
+        var j = 0;
+        for (; j < subarr.length; j++)
+            if (arr[i + j] !== subarr[j])
+                break;
+        if (j == subarr.length)
+            return i;
+			}
+			return -1;
+		}
 	}
 }
 </script>
