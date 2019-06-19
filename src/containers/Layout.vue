@@ -23,7 +23,7 @@
 			</layout-task-detail>
 		</layout-modal>
 		<layout-header></layout-header>
-		<layout-calendar></layout-calendar>
+		<layout-calendar :isNewTaskAdded="this.isNewTaskAdded"></layout-calendar>
 		<layout-footer @openModal="handleTaskAddModalOpen"></layout-footer>
 	</div>
 </template>
@@ -48,7 +48,8 @@ export default {
 			firstAvailableStartTime: '',
 			firstAvailableEndTime: '',
 			projectsList: [],
-			resourceList: []
+			resourceList: [],
+			isNewTaskAdded: false
 		}
 	},
 	created() {
@@ -202,6 +203,7 @@ export default {
 			.post('http://40414669.wdd.napier.ac.uk/inc/postNewTask.php', task)
 			.then(response => {
 				console.log(response);
+				this.isNewTaskAdded = true;
 			})
 			.catch(error => console.log(error))
 		}

@@ -14,6 +14,7 @@
 	import axios from 'axios';
 
 	export default {
+		props: ['isNewTaskAdded'],
 		data: function() {
 			return {
 			task: '',
@@ -21,7 +22,18 @@
 			isDataLoaded: false
 	}
 },
+watch: {
+	isNewTaskAdded: function(){
+			this.___mounted();
+	}
+	},
 	mounted(){
+			this.___mounted();
+		},
+	methods: {
+		___mounted(){
+			this.isDataLoaded = false;
+			this.info = null;
 			axios
 			.get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
 			.then(response => {
@@ -29,7 +41,8 @@
 				this.isDataLoaded = true;
 			})
 			.catch(error => console.log(error))
-		},
+		}
+	},
 		components: {
 			ResourcesResourceRow: Resource
 		}
