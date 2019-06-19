@@ -2,7 +2,7 @@
 	<div class="scrolling-wrapper">
 		<div class="wrapper">
 			<calendar-row-headers></calendar-row-headers>
-			<calendar-resources @openTaskDetails="$emit('openTaskDetails', task)" :isNewTaskAdded="isNewTaskAdded"></calendar-resources>
+			<calendar-resources @openTaskDetails="$emit('openTaskDetails', task)" :isNewTaskAdded="isNewTaskAdded" :tasks="tasks"></calendar-resources>
 		</div>
 	</div>
 </template>
@@ -12,7 +12,7 @@
 	import Resources from '../../containers/Resources.vue'
 
 	export default {
-		props: ["isNewTaskAdded"],
+		props: ["isNewTaskAdded", "tasks"],
 		components: {
 			calendarRowHeaders: RowHeaders,
 			calendarResources: Resources

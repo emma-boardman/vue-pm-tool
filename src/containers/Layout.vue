@@ -19,7 +19,7 @@
       <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
-    <layout-calendar :isNewTaskAdded="this.isNewTaskAdded"></layout-calendar>
+    <layout-calendar :isNewTaskAdded="this.isNewTaskAdded" :tasks="this.resourceTasks"></layout-calendar>
     <layout-footer @openModal="handleTaskAddModalOpen"></layout-footer>
   </div>
 </template>
@@ -53,7 +53,8 @@ export default {
       resourceSchedule: {},
       firstAvailableStartTime: "",
       firstAvailableEndTime: "",
-      isNewTaskAdded: false
+	  isNewTaskAdded: false,
+	  emma: store.state.emma
     };
   },
   created() {
@@ -74,7 +75,8 @@ export default {
       this.isResourceTasksLoading = true;
       const { data } = await ResourceRepository.getResourceTasks();
       this.isResourceTasksLoading = false;
-      this.resourceTasks = data;
+	  store.refreshResourceTasks(data);
+	  this.resourceTasks = store.state.resourceTasks;
     },
     async fetchTaskFormPresets() {
       this.isTaskFormPresetsLoading = true;
@@ -130,7 +132,7 @@ export default {
       this.postNewTask(task);
       // this.firstAvailableStartTime ='';
       // this.firstAvailableEndTime ='';
-    },
+	},
     handleResourceAvailability: function(resourceAndEstimate) {
       const weeklyAvailability = Array(45).fill(true);
       const weeklyTimeSlots = [

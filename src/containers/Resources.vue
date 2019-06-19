@@ -1,7 +1,7 @@
 <template>
-  <div v-if="isDataLoaded" class="resources">
+  <div class="resources">
     <resources-resource-row
-      v-for="resource in info"
+      v-for="resource in tasks"
       :key="resource.resourceId"
       :resourceObj="resource"
     ></resources-resource-row>
@@ -11,28 +11,26 @@
 <script>
 import Resource from "../components/Resource/Resource.vue";
 import axios from "axios";
+import { store } from "../utils/store.js";
 
 export default {
-  props: ["isNewTaskAdded"],
+  props: ["isNewTaskAdded", "tasks"],
   data: function() {
     return {
-      task: "",
-      info: null,
-      isDataLoaded: false
+		
     };
   },
   watch: {
     isNewTaskAdded: function() {
-      this.___mounted();
-    }
+      this.tasks = store.state.resourceTasks;
+	}
   },
   mounted() {
     this.___mounted();
   },
   methods: {
     ___mounted() {
-      this.isDataLoaded = false;
-      this.info = null;
+	
       // axios
       // .get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
       // .then(response => {

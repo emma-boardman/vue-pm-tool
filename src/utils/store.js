@@ -5,11 +5,12 @@ export const store = {
         isTaskFormPresetsLoading: false,
         projectsList: null,
         resourceList: null,
-        resourceSchedule: null
+        resourceSchedule: null,
+        emma: "hello"
     },
-    methods: {
-        refreshResourceTasks(refreshedResourceTasks) {
+    refreshResourceTasks(refreshedResourceTasks) {
             this.state.resourceTasks = refreshedResourceTasks;
+            console.log("input: " + refreshedResourceTasks);
+            console.log("output: " + this.state.emma);
         }
-    }
 }
