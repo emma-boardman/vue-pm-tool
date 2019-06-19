@@ -2,122 +2,137 @@
 	<div class="add-task">
 	<h2>Add New Task</h2>
     
-	<form @submit.prevent="$emit('submitNewTask', task)"> 
-		<ul class="form-wrapper">
-			<li class="form-row">
-				<label for="projectId">Project</label>
-					<select
-							id="taskProject"
-							v-model="task.taskProject"
-							required
-						>
-						<option v-for="project in projects" :key="project.projectId">
-							{{ project.clientName + ": " + project.projectName }} 
-						</option>
-					</select>
-			</li>
-			<li class="form-row">
-				<label for="taskTitle">Task Title</label>
-				<input 
-						type="text" 
-						id="taskTitle" 
-						v-model="task.taskTitle"
-						required />
-			</li>
-			<li class="form-row">
-				<label for="taskArea">Affected area</label>
-				<input 
-						type="text" 
-						id="taskArea" 
-						v-model="task.taskAffectedArea"
-						required/>
-			</li>
-			<li class="form-row-text-area">
-				<label for="taskError">Erroneous behaviour</label>
-				<textarea 
-						id="taskError" 
-						v-model="task.taskError" 
-						required />
-			</li>
-				<li class="form-row-text-area">
-				<label for="taskExpected">Expected behaviour</label>
-				<textarea 
-						id="taskExpected"
-						v-model="task.taskExpected"
-						required />
-			</li>
-			<li class="form-row">
-				<label for="taskImpact">Impact on business</label>
-				<select 
-						id="taskImpact"
-						v-model="task.taskImpact"
-						required>
-					<option v-for="impact in task.impactOptions" :key="impact">
-						{{ impact }}
-					</option>
-				</select>
-					
-			</li>
-			<li class="form-row">
-				<label for="taskTimeNoticed">Time noticed</label>
-				<input 
-						type="text" 
-						id="taskTimeNoticed"
-						v-model="task.taskTimeNoticed"
-						required />
-			</li>
-			<li class="form-row">
-				<label for="taskRecentChanges">Recent Changes</label>
-				<input 
-						type="text" 
-						id="taskRecentChanges"
-						v-model="task.taskRecentChanges" 
-						required />
-			</li>
+	<form @submit.prevent="handleFormSubmission(task)"> 
+		<div class="top-on-desktop">
+			<div class="left-on-desktop">
+			<ul class="form-wrapper">
 				<li class="form-row">
-				<label for="resourceId">Resource</label>
+					<label for="projectId">Project</label>
+						<select
+								id="taskProject"
+								v-model="task.taskProject"
+								required
+							>
+							<option v-for="project in projects" :key="project.projectId">
+								{{ project.clientName + ": " + project.projectName }} 
+							</option>
+						</select>
+				</li>
+				<li class="form-row">
+					<label for="taskTitle">Task Title</label>
+					<input 
+							type="text" 
+							id="taskTitle" 
+							v-model="task.taskTitle"
+							required />
+				</li>
+				<li class="form-row">
+					<label for="taskArea">Affected area</label>
+					<input 
+							type="text" 
+							id="taskArea" 
+							v-model="task.taskAffectedArea"
+							required/>
+				</li>
+				<li class="form-row">
+					<label for="taskError">Erroneous behaviour</label>
+					<textarea 
+							id="taskError" 
+							rows="2"
+							cols="20"
+							v-model="task.taskError" 
+							required />
+				</li>
+					<li class="form-row">
+					<label for="taskExpected">Expected behaviour</label>
+					<textarea 
+							id="taskExpected"
+							rows="2"
+							cols="20"
+							v-model="task.taskExpected"
+							required />
+				</li>
+			</ul>
+			</div>
+			<div class="right-on-desktop">
+			<ul class="form-wrapper">
+				<li class="form-row">
+					<label for="taskImpact">Impact on business</label>
 					<select 
-							id="resourceId"
-							v-model="task.taskResource"
+							id="taskImpact"
+							v-model="task.taskImpact"
 							required>
-						<option 
-							v-for="resource in formPresets['resources']" 
-							:key="resource.resourceId" 
-							:value="resource.resourceId">
-							{{ resource.resourceName }} 
+						<option v-for="impact in impactOptions" :key="impact">
+							{{ impact }}
 						</option>
 					</select>
-			</li>
-			<li class="form-row">
-				<label for="taskEstimate">Estimate</label>
-				<input 
-						type="number" 
-						id="taskEstimate"
-						v-model="task.taskEstimate"
-						@blur="$emit('handleEstimate', {resourceId: task.taskResource, taskEstimate: task.taskEstimate})"
-						required />
-			</li>
-			<li class="form-row">
-				<label for="taskSchedule">Schedule Time Slot</label>
-					<select>
-						<option value="timenoselection"></option>
-						<option value="Mon9000Mon1200">Monday 1st June 09:00 - 12:00</option>
-						<option value="Wed1400Wed1700">Wednesday 3rd June 14:00 - 17:00</option>
-						<option value="Thurs9000Thurs1200">Thursday 4th June 09:00 - 12:00</option>
-					</select>
-			</li>
-		</ul>
+						
+				</li>
+				<li class="form-row">
+					<label for="taskTimeNoticed">Time noticed</label>
+					<input 
+							type="text" 
+							id="taskTimeNoticed"
+							v-model="task.taskTimeNoticed"
+							required />
+				</li>
+				<li class="form-row">
+					<label for="taskRecentChanges">Recent Changes</label>
+					<input 
+							type="text" 
+							id="taskRecentChanges"
+							v-model="task.taskRecentChanges" 
+							required />
+				</li>
+					<li class="form-row">
+					<label for="resourceId">Resource</label>
+						<select 
+								id="resourceId"
+								v-model="task.taskResource"
+								required>
+							<option 
+								v-for="resource in resources" 
+								:key="resource.resourceId" 
+								:value="resource.resourceId">
+								{{ resource.resourceName }} 
+							</option>
+						</select>
+				</li>
+				<li class="form-row">
+					<label for="taskEstimate">Estimate (hours)</label>
+					<input 
+							type="number" 
+							id="taskEstimate"
+							v-model="task.taskEstimate"
+							@blur="$emit('handleEstimate', {resourceId: task.taskResource, taskEstimate: task.taskEstimate})"
+							required />
+				</li>
+				<li class="form-row">
+					<label for="taskSchedule">First Available Time Slot</label>
+						<input 
+								v-if="availableTimes.endTime === ''" 
+								v-model="task.taskTimeSlot"
+								readonly
+								placeholder="Requires resource and estimate input"
+								class="timeslot"
+								/>
+						<p v-else>{{ availableTimes.startTime + " - " + availableTimes.endTime }}</p>
+				</li>
+			</ul>
+		</div> 
+		</div>
+		<div class="bottom-on-desktop">
 		<button type="submit" class="add-task-btn">Add Task</button>
-		<p class="cancel-btn">Cancel</p>
+		<p class="cancel-btn" @click="$emit('closeModal')">Cancel</p>
+		</div>
 	</form>
-		
-    </div>
+	</div>
 
 </template>
 
 <script>
 	export default {
-		props: ['formPresets'],
+		props: ['resources', 'availableTimes', 'projects'],
 		data() {
 			return {
 				task: {
@@ -132,38 +147,34 @@
 					taskResource: '',
 					taskResourceId: '',
 					taskEstimate: '',
-					taskTimeSlot: '',
-					impactOptions: ['Low', 'High', 'Medium']
+					taskTimeSlot: ''
 				},
-				projects: []
+				impactOptions: ['Low', 'High', 'Medium']
 			}
 		},
-		computed: {
-		projects: function() {
-				return this.parseProjects();
+		methods: {
+			handleFormSubmission: function(task){
+				this.$emit('submitNewTask', task);
+				Object.values(this.task).forEach(value => {
+					console.log("old value:" + value);
+					value = '';
+					console.log("new value: " + value);
+				});
+				console.log(this.task);
 			}
-		},
-		created() {
-					let projectsArray = this.formPresets["clientProjects"].reduce(function (formPresetsArray, clientObj){
-					for (let j = 0; j < clientObj.projects.length; j++){
-						let clientObject = {
-							clientName: clientObj.clientName,
-							projectName: clientObj.projects[j].projectTitle,
-							projectId: clientObj.projects[j].projectId
-						}
-						formPresetsArray.push(clientObject);
-					}
-					return formPresetsArray;
-				}, []);
-				this.projects = projectsArray;
-			}
+		}
 		}
 </script>
 
 <style scoped>
+
+.form {
+	height: 100%;
+}
 .add-task {
 	padding: 3%;
 	padding-bottom: 0;
+	height: 100%;
 }
 
 h2 {
@@ -171,6 +182,10 @@ h2 {
 	margin-top: 0;
 }
 
+p {
+	font-size: 0.7em;
+	text-align: center;
+}
 .form-wrapper {
 	list-style-type: none;
 	padding: 0;
@@ -183,32 +198,23 @@ h2 {
 	padding: 3% 0%;
 }
 
-.form-row-text-area {
-	display: flex;
-	flex-direction: column;
-	padding: 3% 0% 2% 0%;
-}
-
 .form-row > label, .form-row-text-area > label {
 	text-align: left;
 	font-size: 0.8em;
+	width: 50%;
 }
 
 .form-row-text-area > textarea {
 	margin-top: 1.8%;
 }
 
-.form-row > select {
-	width: 50%;
-}
-
-
-.form-row > input, .form-row-text-area > textarea, .form-row > select{
+.form-row > input, .form-row > textarea, .form-row > select{
 	background-color: #D8D8D8;
 	border: solid 1px #979797;
 	border-radius: 4px;
 	font-size: 0.8em;
-	padding: 0.5%;
+	padding: 0.6%;
+	width: 50%;
 }
 
 button {
@@ -218,14 +224,61 @@ button {
 	border-radius: 6px;
 	font-size: 1em;
 	font-weight: 600;
-	margin-top: 10%;
+	margin-top: 5%;
 }
 
 .cancel-btn {
 	font-size: 0.7em;
 	margin-bottom: 1%;
+	text-align: center;
 }
 
 
+@media (min-width: 600px){
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+	.add-task {
+		width: 100%;
+		padding: 0;
+	}
+	form > .top-on-desktop {
+		display: flex;
+	}
+	.form-row {
+		flex-direction: column;
+		width: 100%;
+		padding-top: 1.5%;
+	}
+	.top-on-desktop > .left-on-desktop {
+		width: 50%;
+	}
+	.top-on-desktop> .right-on-desktop {
+		width: 50%;
+	}
+	.form-row > input, .form-row > textarea, .form-row > select {
+		width: 85%;
+		margin-top: 2%;
+		margin-bottom: 0;
+		padding: 1.5%;
+	}
+	.form-row > label {
+		width: 100%;
+		margin-top: 0;
+	}
+	p {
+		text-align: left;
+	}
+	button {
+		padding: 2% 5%;
+		margin-top: 1.5%;
+		margin-bottom: 1%;
+	}
+	.cancel-btn {
+		margin-bottom: 0;
+	}
+	
+}
 
 </style>

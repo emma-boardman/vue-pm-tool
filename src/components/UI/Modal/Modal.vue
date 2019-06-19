@@ -49,8 +49,8 @@
 
 @media (min-width: 600px) {
     .modal {
-        width: 500px;
-        left: calc(50% - 250px);
+        width: 60%;
+        left: calc(50% - 30%);
     }
 }
 </style>

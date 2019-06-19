@@ -5,9 +5,12 @@
 				@closeModal="handleTaskAddModalClose" 
 				:showModal="showTaskAdd">
 			<layout-task-add 
-				:formPresets=taskAddFormPresets 
+				:projects="this.projectsList"
+				:resources="this.resourceList"
 				@submitNewTask="handleFormSubmission"
-				@handleEstimate="handleResourceAvailability"></layout-task-add>
+				@handleEstimate="getResourceSchedule"
+				@closeModal="handleTaskAddModalClose" 
+				:availableTimes="{startTime: this.firstAvailableStartTime, endTime: this.firstAvailableEndTime}"></layout-task-add>
 		</layout-modal>
 		<layout-modal 
 				:if="showTaskDetail" 
@@ -41,9 +44,11 @@ export default {
 			showTaskAdd: false,
 			showTaskDetail: false,
 			taskDetail: {},
-			taskAddFormPresets: {},
-			isTaskPresetsLoaded: false,
-			taskAvailability: {}
+			taskAvailability: {},
+			firstAvailableStartTime: '',
+			firstAvailableEndTime: '',
+			projectsList: [],
+			resourceList: []
 		}
 	},
 	created() {
@@ -51,8 +56,9 @@ export default {
 		axios
 		.get('http://40414669.wdd.napier.ac.uk/inc/readAddTaskOptions.php')
 		.then(response => {
-			this.taskAddFormPresets = response.data;
-			this.isTaskPresetsLoaded = true
+			this.projectsList = response.data["clientProjects"];
+			this.resourceList = response.data["resources"];
+			this.handleTaskPresets();	
 		})
 		.catch(error => console.log(error))
 	},
@@ -65,6 +71,20 @@ export default {
 		layoutTaskDetail: TaskDetail
 	},
 	methods: {
+		handleTaskPresets: function(){
+			let projectsArray = this.projectsList.reduce(function (formPresetsArray, clientObj){
+				for (let j = 0; j < clientObj.projects.length; j++){
+					let clientObject = {
+						clientName: clientObj.clientName,
+						projectName: clientObj.projects[j].projectTitle,
+						projectId: clientObj.projects[j].projectId
+						}
+						formPresetsArray.push(clientObject);
+					}
+					return formPresetsArray;
+				}, []);
+				this.projectsList = projectsArray;
+		},
 		handleTaskAddModalClose: function(){
 			this.showTaskAdd = false;
 		},
@@ -74,7 +94,6 @@ export default {
 		handleTaskDetailsModalOpen: function(task){
 			this.showTaskDetail = true;
 			this.taskDetail = task;
-
 		},
 		handleTaskDetailModalClose: function(){
 			this.showTaskDetail = false;
@@ -83,9 +102,6 @@ export default {
 			console.log(task);
 		},
 		handleResourceAvailability: function(resourceAndEstimate){
-			console.log("resourceId: " + resourceAndEstimate.resourceId);
-
-			this.getResourceSchedule(resourceAndEstimate.resourceId);
 			const weeklyAvailability = Array(9).fill(true);
 			const weeklyTimeSlots = [
 				"Mon0900",
@@ -96,28 +112,65 @@ export default {
 				"Mon1400",
 				"Mon1500",
 				"Mon1600",
-				"Mon1700"
-			]
-			const startTime = "Mon0900";
-			const endTime = "Mon1100";
-			const estimatedTime = 2;
-
-			console.log("starting availability:" + weeklyAvailability)
-			// get index of array 
-			 for (let i = 0; i < weeklyTimeSlots.length; i++){
-				 if (weeklyTimeSlots[i] == startTime){
-					 for (let j = 0; j < estimatedTime; j ++)
-					 weeklyAvailability[i + j] = false;
-				 }
-			 }
-			console.log("ending availability:" + weeklyAvailability)
-
-			const estimateArray = Array(estimatedTime).fill(true);
-			let indexOfFirstAvailability = this.findAvailability(weeklyAvailability, estimateArray);
-			const possibleStartTime = (weeklyTimeSlots[indexOfFirstAvailability]);
-			const possibleEndTime = (weeklyTimeSlots[indexOfFirstAvailability + estimatedTime]);
+				"Mon1700",
+				"Tues0900",
+				"Tues1000",
+				"Tues1100",
+				"Tues1200",
+				"Tues1300",
+				"Tues1400",
+				"Tues1500",
+				"Tues1600",
+				"Tues1700",
+				"Wed0900",
+				"Wed1000",
+				"Wed1100",
+				"Wed1200",
+				"Wed1300",
+				"Wed1400",
+				"Wed1500",
+				"Wed1600",
+				"Wed1700",
+				"Thurs0900",
+				"Thurs1000",
+				"Thurs1100",
+				"Thurs1200",
+				"Thurs1300",
+				"Thurs1400",
+				"Thurs1500",
+				"Thurs1600",
+				"Thurs1700",
+				"Fri0900",
+				"Fri1000",
+				"Fri1100",
+				"Fri1200",
+				"Fri1300",
+				"Fri1400",
+				"Fri1500",
+				"Fri1600",
+				"Fri1700",
 			
-
+			]
+			if (this.taskAvailability.length > 0){
+			
+				for (let n = 0; n < this.taskAvailability.length; n++) {
+					const startTime = this.taskAvailability[n].taskStartTime;
+					const estimatedTime = this.taskAvailability[n].taskEstimate;
+					for (let i = 0; i < weeklyTimeSlots.length; i++){
+						if (weeklyTimeSlots[i] == startTime){
+							for (let j = 0; j < estimatedTime; j ++){
+							weeklyAvailability[i + j] = false;
+							}
+						}
+					 }
+				}
+			}
+			console.log(weeklyAvailability);
+			const estimateArray = Array(resourceAndEstimate.taskEstimate).fill(true);
+			let indexOfFirstAvailability = this.findAvailability(weeklyAvailability, estimateArray);
+			this.firstAvailableStartTime = (weeklyTimeSlots[indexOfFirstAvailability]);
+			const endTime = parseInt(indexOfFirstAvailability) + parseInt(resourceAndEstimate.taskEstimate);
+			this.firstAvailableEndTime = (weeklyTimeSlots[endTime]);
 		},
 		findAvailability(arr, subarr) {
     	for (var i = 0; i < 1 + (arr.length - subarr.length); i++) {
@@ -130,14 +183,14 @@ export default {
 			}
 			return -1;
 		},
-		getResourceSchedule(resourceId){
-			const url = "http://40414669.wdd.napier.ac.uk/inc/readResourceSchedule.php/?id=" + resourceId;
+		getResourceSchedule(resourceAndEstimate){
+			const url = "http://40414669.wdd.napier.ac.uk/inc/readResourceSchedule.php/?id=" + resourceAndEstimate.resourceId;
 			console.log(url);
 			axios
 			.get(url)
 			.then(response => {
-				console.log("response data: " + response.data.data)
-				this.taskAvailability = response.data;
+				this.taskAvailability = response.data.data;
+				this.handleResourceAvailability(resourceAndEstimate);
 			});
 		}
 	}
@@ -148,6 +201,7 @@ export default {
 
 .modal-task-detail >>> .modal {
 	padding: 0;
+	top: 10%;
 	border: var(--dark-grey) solid 1px;
 }
 
