@@ -155,12 +155,18 @@
 		methods: {
 			handleFormSubmission: function(task){
 				this.$emit('submitNewTask', task);
-				Object.values(this.task).forEach(value => {
-					console.log("old value:" + value);
-					value = '';
-					console.log("new value: " + value);
-				});
-				console.log(this.task);
+				for (const key in this.task){
+					this.task[key] = '';
+					console.log(key + " " + this.task[key]);
+				}
+				// const clearedForm = Object.values(this.task).forEach(value => {
+				// 	console.log("old value:" + value);
+				// 	value = '';
+				// 	console.log("new value: " + value);
+				// });
+				// console
+				// this.task = clearedForm;
+				// console.log(this.task);
 			}
 		}
 		}

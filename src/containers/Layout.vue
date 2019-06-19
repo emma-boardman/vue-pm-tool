@@ -100,6 +100,7 @@ export default {
 		},
 		handleFormSubmission: function(task){
 			console.log(task);
+			this.handleTaskAddModalClose();
 		},
 		handleResourceAvailability: function(resourceAndEstimate){
 			const weeklyAvailability = Array(9).fill(true);
