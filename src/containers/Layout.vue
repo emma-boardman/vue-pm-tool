@@ -101,6 +101,9 @@ export default {
 		handleFormSubmission: function(task){
 			console.log(task);
 			this.handleTaskAddModalClose();
+			this.postNewTask(task);
+			// this.firstAvailableStartTime ='';
+			// this.firstAvailableEndTime ='';
 		},
 		handleResourceAvailability: function(resourceAndEstimate){
 			const weeklyAvailability = Array(9).fill(true);
@@ -193,6 +196,14 @@ export default {
 				this.taskAvailability = response.data.data;
 				this.handleResourceAvailability(resourceAndEstimate);
 			});
+		},
+		postNewTask(task){
+			axios
+			.post('http://40414669.wdd.napier.ac.uk/inc/postNewTask.php', task)
+			.then(response => {
+				console.log(response);
+			})
+			.catch(error => console.log(error))
 		}
 	}
 }

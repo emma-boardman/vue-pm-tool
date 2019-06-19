@@ -33,7 +33,7 @@
 
 @media (min-width: 992px){
 	.day-date p {
-		margin-top: 20px;
+		margin-top: 10px;
 	}
 }
 </style>

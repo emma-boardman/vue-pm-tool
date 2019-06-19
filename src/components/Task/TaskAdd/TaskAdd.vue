@@ -10,10 +10,10 @@
 					<label for="projectId">Project</label>
 						<select
 								id="taskProject"
-								v-model="task.taskProject"
+								v-model="task.projectId"
 								required
 							>
-							<option v-for="project in projects" :key="project.projectId">
+							<option v-for="project in projects" :key="project.projectId" :value="project.projectId">
 								{{ project.clientName + ": " + project.projectName }} 
 							</option>
 						</select>
@@ -35,21 +35,21 @@
 							required/>
 				</li>
 				<li class="form-row">
-					<label for="taskError">Erroneous behaviour</label>
+					<label for="taskErroneousBehaviour">Erroneous behaviour</label>
 					<textarea 
-							id="taskError" 
+							id="taskErroneousBehaviour" 
 							rows="2"
 							cols="20"
-							v-model="task.taskError" 
+							v-model="task.taskErroneousBehaviour" 
 							required />
 				</li>
 					<li class="form-row">
-					<label for="taskExpected">Expected behaviour</label>
+					<label for="taskExpectedBehaviour">Expected behaviour</label>
 					<textarea 
-							id="taskExpected"
+							id="taskExpectedBehaviour"
 							rows="2"
 							cols="20"
-							v-model="task.taskExpected"
+							v-model="task.taskExpectedBehaviour"
 							required />
 				</li>
 			</ul>
@@ -109,14 +109,20 @@
 				</li>
 				<li class="form-row">
 					<label for="taskSchedule">First Available Time Slot</label>
-						<input 
-								v-if="availableTimes.endTime === ''" 
-								v-model="task.taskTimeSlot"
-								readonly
-								placeholder="Requires resource and estimate input"
-								class="timeslot"
-								/>
-						<p v-else>{{ availableTimes.startTime + " - " + availableTimes.endTime }}</p>
+						<div>
+							<div v-if="availableTimes.endTime === ''"><p>Requires resource and estimate input</p></div>
+							<div v-else class="timeslots">
+								<input readonly
+									v-model="availableTimes.startTime"
+									:placeholder="availableTimes.startTime"
+										/> - 
+								<input readonly
+									v-model="availableTimes.endTime"
+									:placeholder="availableTimes.endTime"
+										/> 
+							</div>
+						</div>
+				
 				</li>
 			</ul>
 		</div> 
@@ -136,37 +142,35 @@
 		data() {
 			return {
 				task: {
-					taskProject: '',
+					projectId: '',
 					taskTitle: '',
 					taskAffectedArea: '',
-					taskError: '',
-					taskExpected: '',
+					taskErroneousBehaviour: '',
+					taskExpectedBehaviour: '',
 					taskImpact: 'low',
 					taskTimeNoticed: '',
 					taskRecentChanges: '',
 					taskResource: '',
-					taskResourceId: '',
 					taskEstimate: '',
-					taskTimeSlot: ''
+					taskStartTime: '',
+					taskEndTime: '',
 				},
 				impactOptions: ['Low', 'High', 'Medium']
 			}
 		},
+		watch: {
+			availableTimes: function(newVal, oldVal){
+				this.task.taskStartTime = newVal.startTime;
+				this.task.taskEndTime = newVal.endTime;
+			}	 
+		},
 		methods: {
 			handleFormSubmission: function(task){
 				this.$emit('submitNewTask', task);
-				for (const key in this.task){
-					this.task[key] = '';
-					console.log(key + " " + this.task[key]);
-				}
-				// const clearedForm = Object.values(this.task).forEach(value => {
-				// 	console.log("old value:" + value);
-				// 	value = '';
-				// 	console.log("new value: " + value);
-				// });
-				// console
-				// this.task = clearedForm;
-				// console.log(this.task);
+				// for (const key in this.task){
+				// 	this.task[key] = '';
+				// 	console.log(key + " " + this.task[key]);
+				// }
 			}
 		}
 		}
@@ -214,13 +218,29 @@ p {
 	margin-top: 1.8%;
 }
 
-.form-row > input, .form-row > textarea, .form-row > select{
+.form-row > input, .form-row > textarea, .form-row > select, .timeslots > input{
 	background-color: #D8D8D8;
 	border: solid 1px #979797;
 	border-radius: 4px;
 	font-size: 0.8em;
 	padding: 0.6%;
 	width: 50%;
+}
+
+.timeslots {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.timeslots > input {
+	width: 35%;
+	text-align: center;
+	background-color: transparent;
+	border: 0;
+	font-weight: 600;
+}
+.timeslots > input:focus {
+	outline: none;
 }
 
 button {
