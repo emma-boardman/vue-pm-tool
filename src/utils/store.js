@@ -3,12 +3,12 @@ export const store = {
         isResourceTasksLoading: false,
         resourceTasks: null,
         isTaskFormPresetsLoading: false,
-		projectsList: null,
+        projectsList: null,
         resourceList: null,
         resourceSchedule: null
     },
     methods: {
-        refreshResourceTasks(refreshedResourceTasks){
+        refreshResourceTasks(refreshedResourceTasks) {
             this.state.resourceTasks = refreshedResourceTasks;
         }
     }
