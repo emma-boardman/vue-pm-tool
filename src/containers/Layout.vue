@@ -8,7 +8,7 @@
 				:projects="this.projectsList"
 				:resources="this.resourceList"
 				@submitNewTask="handleFormSubmission"
-				@handleEstimate="getResourceSchedule"
+				@handleEstimate="fetchResourceSchedule"
 				@closeModal="handleTaskAddModalClose" 
 				:availableTimes="{startTime: this.firstAvailableStartTime, endTime: this.firstAvailableEndTime}"></layout-task-add>
 		</layout-modal>
@@ -36,32 +36,34 @@ import Modal from '../components/UI/Modal/Modal.vue'
 import TaskAdd from '../components/Task/TaskAdd/TaskAdd.vue'
 import TaskDetail from '../components/Task/TaskDetail/TaskDetail.vue'
 import { EventBus } from '../event-bus.js'
+import { store } from '../utils/store.js'
 import axios from 'axios'
+import { RepositoryFactory } from "../utils/RepositoryFactory"
+const ResourceRepository = RepositoryFactory.get('resources')
+const TaskRepository = RepositoryFactory.get('tasks')
 
 export default {
 	data: function(){
 		return {
+			isResourceTasksLoading: store.state.isResourceTasksLoading,
+			resourceTasks: store.state.resourceTasks,
+			isTaskFormPresetsLoading: store.state.isTaskFormPresetsLoading,
+			projectsList: store.state.projectsList,
+			resourceList: store.state.resourceList,
+			resourceSchedule: store.state.resourceSchedule,
 			showTaskAdd: false,
 			showTaskDetail: false,
 			taskDetail: {},
 			taskAvailability: {},
 			firstAvailableStartTime: '',
 			firstAvailableEndTime: '',
-			projectsList: [],
-			resourceList: [],
 			isNewTaskAdded: false
 		}
 	},
 	created() {
 		EventBus.$on('showTaskDetails', this.handleTaskDetailsModalOpen);
-		axios
-		.get('http://40414669.wdd.napier.ac.uk/inc/readAddTaskOptions.php')
-		.then(response => {
-			this.projectsList = response.data["clientProjects"];
-			this.resourceList = response.data["resources"];
-			this.handleTaskPresets();	
-		})
-		.catch(error => console.log(error))
+		this.fetchResourceTasks();
+		this.fetchTaskFormPresets();
 	},
 	components: {
 		layoutHeader: Header,
@@ -72,6 +74,27 @@ export default {
 		layoutTaskDetail: TaskDetail
 	},
 	methods: {
+		async fetchResourceTasks() {
+			this.isResourceTasksLoading = true;
+			const { data } = await ResourceRepository.getResourceTasks();
+			this.isResourceTasksLoading = false;
+			this.resourceTasks = data;
+		},
+		async fetchTaskFormPresets(){
+			this.isTaskFormPresetsLoading = true;
+			const { data } = await TaskRepository.getTaskFormPresets();
+			this.isTaskFormPresetsLoading = false;
+			this.projectsList = data["clientProjects"]; 
+			this.resourceList = data["resources"];
+			this.handleTaskPresets();	
+		},
+		async fetchResourceSchedule(resourceAndEstimate){
+			this.isResourceScheduleLoading = true;
+			const { data } = await ResourceRepository.getResourceSchedule(resourceAndEstimate.resourceId);
+			this.isResourceScheduleLoading = false;
+			this.resourceSchedule = data;
+			this.handleResourceAvailability(resourceAndEstimate);
+		},
 		handleTaskPresets: function(){
 			let projectsArray = this.projectsList.reduce(function (formPresetsArray, clientObj){
 				for (let j = 0; j < clientObj.projects.length; j++){
@@ -107,7 +130,7 @@ export default {
 			// this.firstAvailableEndTime ='';
 		},
 		handleResourceAvailability: function(resourceAndEstimate){
-			const weeklyAvailability = Array(9).fill(true);
+			const weeklyAvailability = Array(45).fill(true);
 			const weeklyTimeSlots = [
 				"Mon0900",
 				"Mon1000",
@@ -187,16 +210,6 @@ export default {
             return i;
 			}
 			return -1;
-		},
-		getResourceSchedule(resourceAndEstimate){
-			const url = "http://40414669.wdd.napier.ac.uk/inc/readResourceSchedule.php/?id=" + resourceAndEstimate.resourceId;
-			console.log(url);
-			axios
-			.get(url)
-			.then(response => {
-				this.taskAvailability = response.data.data;
-				this.handleResourceAvailability(resourceAndEstimate);
-			});
 		},
 		postNewTask(task){
 			axios

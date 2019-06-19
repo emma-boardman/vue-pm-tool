@@ -34,13 +34,13 @@ watch: {
 		___mounted(){
 			this.isDataLoaded = false;
 			this.info = null;
-			axios
-			.get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
-			.then(response => {
-				this.info = response.data.data;
-				this.isDataLoaded = true;
-			})
-			.catch(error => console.log(error))
+			// axios
+			// .get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
+			// .then(response => {
+			// 	this.info = response.data.data;
+			// 	this.isDataLoaded = true;
+			// })
+			// .catch(error => console.log(error))
 		}
 	},
 		components: {
