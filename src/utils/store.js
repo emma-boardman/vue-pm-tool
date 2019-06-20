@@ -8,18 +8,14 @@ export const store = {
         isTaskFormPresetsLoading: false,
         projectsList: null,
         resourceList: null,
-        resourceSchedule: null,
-        emma: "hello"
+        resourceSchedule: null
     },
     refreshResourceTasks(refreshedResourceTasks) {
-            this.state.resourceTasks = refreshedResourceTasks;
-            console.log("input: " + refreshedResourceTasks);
-            console.log("output: " + this.state.emma);
+        this.state.resourceTasks = refreshedResourceTasks;
+        console.log("input: " + refreshedResourceTasks);
     },
     showAddTaskForm() {
         this.state.modalControls.isAddTaskFormShowing = true;
-        console.log("I am triggered");
-        console.log(this.state.modalControls.isAddTaskFormShowing);
     },
     hideAddTaskForm() {
         this.state.modalControls.isAddTaskFormShowing = false;

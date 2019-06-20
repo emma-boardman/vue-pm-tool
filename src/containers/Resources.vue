@@ -16,21 +16,18 @@ import { store } from "../utils/store.js";
 export default {
   props: ["isNewTaskAdded", "tasks"],
   data: function() {
-    return {
-		
-    };
+    return {};
   },
   watch: {
     isNewTaskAdded: function() {
       this.tasks = store.state.resourceTasks;
-	}
+    }
   },
   mounted() {
     this.___mounted();
   },
   methods: {
     ___mounted() {
-	
       // axios
       // .get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
       // .then(response => {

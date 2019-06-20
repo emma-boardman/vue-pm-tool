@@ -1,7 +1,7 @@
 <template>
-	<div class="hour">
-		<slot></slot>
-	</div>
+  <div class="hour">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -9,10 +9,10 @@
 
 <style scoped>
 .hour {
-	width: 10%;
-	margin: 1px;
-	height: 5px;
-	font-size: 0.7em;
-	border: 1px red solid;
+  width: 10%;
+  margin: 1px;
+  height: 5px;
+  font-size: 0.7em;
+  border: 1px red solid;
 }
 </style>

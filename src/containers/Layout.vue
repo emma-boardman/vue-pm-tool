@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- <layout-modal :if="showTaskAdd" @closeModal="handleTaskAddModalClose" :showModal="showTaskAdd"> -->
-    <layout-modal :if="isAddTaskFormShowing" @closeModal="handleTaskAddModalClose" :showModal="isAddTaskFormShowing">
+    <layout-modal
+      :if="isAddTaskFormShowing"
+      @closeModal="handleTaskAddModalClose"
+      :showModal="isAddTaskFormShowing"
+    >
       <layout-task-add
         :projects="this.projectsList"
         :resources="this.resourceList"
@@ -23,7 +27,6 @@
     <layout-calendar :isNewTaskAdded="this.isNewTaskAdded" :tasks="this.resourceTasks"></layout-calendar>
     <!-- <layout-footer @openModal="handleTaskAddModalOpen"></layout-footer> -->
     <layout-footer></layout-footer>
-  
   </div>
 </template>
 
@@ -57,8 +60,8 @@ export default {
       resourceSchedule: {},
       firstAvailableStartTime: "",
       firstAvailableEndTime: "",
-	  isNewTaskAdded: false,
-	  emma: store.state.emma
+      isNewTaskAdded: false,
+      emma: store.state.emma
     };
   },
   computed: {
@@ -84,8 +87,8 @@ export default {
       this.isResourceTasksLoading = true;
       const { data } = await ResourceRepository.getResourceTasks();
       this.isResourceTasksLoading = false;
-	  store.refreshResourceTasks(data);
-	  this.resourceTasks = store.state.resourceTasks;
+      store.refreshResourceTasks(data);
+      this.resourceTasks = store.state.resourceTasks;
     },
     async fetchTaskFormPresets() {
       this.isTaskFormPresetsLoading = true;
@@ -141,7 +144,7 @@ export default {
       this.postNewTask(task);
       // this.firstAvailableStartTime ='';
       // this.firstAvailableEndTime ='';
-	},
+    },
     handleResourceAvailability: function(resourceAndEstimate) {
       const weeklyAvailability = Array(45).fill(true);
       const weeklyTimeSlots = [
