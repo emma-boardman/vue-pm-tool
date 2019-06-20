@@ -1,10 +1,9 @@
 <template>
   <div>
-    <!-- <layout-modal :if="showTaskAdd" @closeModal="handleTaskAddModalClose" :showModal="showTaskAdd"> -->
     <layout-modal
       :if="isAddTaskFormShowing"
-      @closeModal="handleTaskAddModalClose"
       :showModal="isAddTaskFormShowing"
+      @closeModal="handleTaskAddModalClose"
     >
       <layout-task-add
         :projects="this.projectsList"
@@ -16,16 +15,15 @@
       ></layout-task-add>
     </layout-modal>
     <layout-modal
-      :if="showTaskDetail"
+      :if="isTaskDetailShowing"
       @closeModal="handleTaskDetailModalClose"
-      :showModal="showTaskDetail"
+      :showModal="isTaskDetailShowing"
       class="modal-task-detail"
     >
       <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
-    <layout-calendar :isNewTaskAdded="this.isNewTaskAdded" :tasks="this.resourceTasks"></layout-calendar>
-    <!-- <layout-footer @openModal="handleTaskAddModalOpen"></layout-footer> -->
+    <layout-calendar :isNewTaskAdded="this.isNewTaskAdded"></layout-calendar>
     <layout-footer></layout-footer>
   </div>
 </template>
@@ -54,8 +52,6 @@ export default {
       projectsList: store.state.projectsList,
       resourceList: store.state.resourceList,
       resourceSchedule: store.state.resourceSchedule,
-      showTaskAdd: store.state.modalControls.isAddTaskFormShowing,
-      showTaskDetail: false,
       taskDetail: {},
       resourceSchedule: {},
       firstAvailableStartTime: "",
@@ -67,11 +63,14 @@ export default {
   computed: {
     isAddTaskFormShowing: function() {
       return store.state.modalControls.isAddTaskFormShowing;
-    }
+     },
+     isTaskDetailShowing: function() {
+       return store.state.modalControls.isTaskDetailShowing;
+     },
   },
   created() {
     EventBus.$on("showTaskDetails", this.handleTaskDetailsModalOpen);
-    this.fetchResourceTasks();
+    store.fetchResourceTasks();
     this.fetchTaskFormPresets();
   },
   components: {
@@ -83,13 +82,6 @@ export default {
     layoutTaskDetail: TaskDetail
   },
   methods: {
-    async fetchResourceTasks() {
-      this.isResourceTasksLoading = true;
-      const { data } = await ResourceRepository.getResourceTasks();
-      this.isResourceTasksLoading = false;
-      store.refreshResourceTasks(data);
-      this.resourceTasks = store.state.resourceTasks;
-    },
     async fetchTaskFormPresets() {
       this.isTaskFormPresetsLoading = true;
       const { data } = await TaskRepository.getTaskFormPresets();
@@ -126,17 +118,17 @@ export default {
       this.projectsList = projectsArray;
     },
     handleTaskAddModalClose: function() {
-      this.showTaskAdd = false;
+      store.hideAddTaskForm();
     },
     handleTaskAddModalOpen: function() {
       this.showTaskAdd = true;
     },
     handleTaskDetailsModalOpen: function(task) {
-      this.showTaskDetail = true;
+      store.state.modalControls.isTaskDetailShowing = true;
       this.taskDetail = task;
     },
     handleTaskDetailModalClose: function() {
-      this.showTaskDetail = false;
+      store.hideTaskDetail();
     },
     handleFormSubmission: function(task) {
       console.log(task);
@@ -194,7 +186,6 @@ export default {
         "Fri1600",
         "Fri1700"
       ];
-      // NOT EFFICIENT. refactor.
       if (this.resourceSchedule.length > 0) {
         for (let n = 0; n < this.resourceSchedule.length; n++) {
           const startTime = this.resourceSchedule[n].taskStartTime;
@@ -208,7 +199,6 @@ export default {
           }
         }
       }
-      // what happens in event of no tasks being scheduled?
       console.log(weeklyAvailability);
       const estimateArray = Array(resourceAndEstimate.taskEstimate).fill(true);
       let indexOfFirstAvailability = this.findAvailability(
@@ -234,7 +224,8 @@ export default {
         .post("http://40414669.wdd.napier.ac.uk/inc/postNewTask.php", task)
         .then(response => {
           console.log(response);
-          this.isNewTaskAdded = true;
+          store.state.resourceControls.resourceTaskList = null;
+          store.fetchResourceTasks();
         })
         .catch(error => console.log(error));
     }

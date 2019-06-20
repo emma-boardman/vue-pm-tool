@@ -7,7 +7,7 @@
     ></resource-resource-name>
     <resource-weekly-grid
       class="resource-weekly-grid"
-      :tasks="resourceObj.tasks"
+      :tasks="tasks"
       @openTaskDetails="handleTaskClick"
     ></resource-weekly-grid>
   </div>
@@ -22,6 +22,11 @@ export default {
   components: {
     ResourceResourceName: ResourceName,
     ResourceWeeklyGrid: WeeklyGrid
+  },
+  computed: {
+    tasks: function() {
+      return this.resourceObj.tasks;
+    }
   },
   methods: {
     handleTaskClick: function(task) {

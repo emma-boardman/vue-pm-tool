@@ -25,6 +25,7 @@
 import DayDate from "./DayDate/DayDate.vue";
 import Task from "../../Task/Task.vue";
 import { EventBus } from "../../../event-bus.js";
+import { store } from "../../../utils/store.js";
 
 export default {
   props: ["tasks"],

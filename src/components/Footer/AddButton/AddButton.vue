@@ -1,6 +1,5 @@
 <template>
   <div class="add-button-wrapper">
-    <!-- <img @click="$emit('openModal')" src="../../../assets/addButton.svg"> -->
     <img @click="handleAddTaskClick" src="../../../assets/addButton.svg">
   </div>
 </template>
@@ -11,9 +10,7 @@ import { store } from "../../../utils/store.js";
 export default {
   methods: {
     handleAddTaskClick: function() {
-      console.log("check point 1");
       store.showAddTaskForm();
-      console.log("check point 2");
     }
   }
 };

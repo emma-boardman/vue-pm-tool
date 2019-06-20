@@ -14,27 +14,13 @@ import axios from "axios";
 import { store } from "../utils/store.js";
 
 export default {
-  props: ["isNewTaskAdded", "tasks"],
+  props: ["isNewTaskAdded", ],
   data: function() {
     return {};
   },
-  watch: {
-    isNewTaskAdded: function() {
-      this.tasks = store.state.resourceTasks;
-    }
-  },
-  mounted() {
-    this.___mounted();
-  },
-  methods: {
-    ___mounted() {
-      // axios
-      // .get('http://40414669.wdd.napier.ac.uk/inc/readTaskDetails.php')
-      // .then(response => {
-      // 	this.info = response.data.data;
-      // 	this.isDataLoaded = true;
-      // })
-      // .catch(error => console.log(error))
+  computed: {
+    tasks: function() {
+      return store.state.resourceControls.resourceTaskList;
     }
   },
   components: {
