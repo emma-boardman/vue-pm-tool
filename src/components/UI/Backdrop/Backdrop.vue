@@ -1,10 +1,17 @@
 <template>
-	<div class="backdrop" v-show="showModal" @click="$emit('closeModal')"></div>
+	<div class="backdrop" v-show="showModal" @click="handleModalClose"></div>
 </template>
 
 <script>
+import { store } from '../../../utils/store.js'
+
 	export default {
-		props: ['showModal']
+		props: ['showModal'],
+		methods: {
+			handleModalClose: function() {
+				store.hideAddTaskForm();
+			}
+		}
 	}
 </script>
 

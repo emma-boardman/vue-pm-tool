@@ -1,11 +1,21 @@
 <template>
 	<div class="add-button-wrapper">
-		<img @click="$emit('openModal')" src="../../../assets/addButton.svg">
+		<!-- <img @click="$emit('openModal')" src="../../../assets/addButton.svg"> -->
+		<img @click="handleAddTaskClick" src="../../../assets/addButton.svg">
 	</div>
 </template>
 
 <script>
+import { store } from "../../../utils/store.js"
+
 	export default {
+		methods: {
+			handleAddTaskClick: function() {
+				console.log("check point 1");
+				store.showAddTaskForm();
+				console.log("check point 2");
+			}
+		}
 
 	}
 </script>
@@ -33,7 +43,6 @@
 		margin: 1.7%;
 	}
 }
-
 
 @media (min-width: 1200px){
 	.add-button-wrapper > img {

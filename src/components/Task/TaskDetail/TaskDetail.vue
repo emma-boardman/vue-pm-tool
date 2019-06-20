@@ -121,13 +121,23 @@
 
 .task-detail__task-content--impact {
 	background-color: pink;
-	padding: 2% 3% 2% 3%;
+	padding: 1.5% 0%;
 	width: 20%;
 	text-align:center;
 	border-radius: 3px;
 	font-weight: 400;
 	font-size: 0.7em;
 	border: var(--dark-grey) solid 0.5px;
-	margin-left: 2%;
+	display:block;
+	margin-top: 3%;
+	
+}
+
+@media (min-width: 500px){
+	.task-detail__task-content--impact {
+		display: inline;
+		margin-right: 2%;
+		padding: 0.5% 2%;
+	}
 }
 </style>

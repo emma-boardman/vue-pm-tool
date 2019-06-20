@@ -1,6 +1,7 @@
 <template>
 	<footer>
-		<footer-add-button @openModal="$emit('openModal')"></footer-add-button>
+		<!-- <footer-add-button @openModal="$emit('openModal')"></footer-add-button> -->
+		<footer-add-button></footer-add-button>
 	</footer>
 </template>
 

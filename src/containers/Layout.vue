@@ -1,6 +1,7 @@
 <template>
   <div>
-    <layout-modal :if="showTaskAdd" @closeModal="handleTaskAddModalClose" :showModal="showTaskAdd">
+    <!-- <layout-modal :if="showTaskAdd" @closeModal="handleTaskAddModalClose" :showModal="showTaskAdd"> -->
+    <layout-modal :if="isAddTaskFormShowing" @closeModal="handleTaskAddModalClose" :showModal="isAddTaskFormShowing">
       <layout-task-add
         :projects="this.projectsList"
         :resources="this.resourceList"
@@ -20,7 +21,9 @@
     </layout-modal>
     <layout-header></layout-header>
     <layout-calendar :isNewTaskAdded="this.isNewTaskAdded" :tasks="this.resourceTasks"></layout-calendar>
-    <layout-footer @openModal="handleTaskAddModalOpen"></layout-footer>
+    <!-- <layout-footer @openModal="handleTaskAddModalOpen"></layout-footer> -->
+    <layout-footer></layout-footer>
+  
   </div>
 </template>
 
@@ -41,13 +44,14 @@ const TaskRepository = RepositoryFactory.get("tasks");
 export default {
   data: function() {
     return {
+      store,
       isResourceTasksLoading: store.state.isResourceTasksLoading,
       resourceTasks: store.state.resourceTasks,
       isTaskFormPresetsLoading: store.state.isTaskFormPresetsLoading,
       projectsList: store.state.projectsList,
       resourceList: store.state.resourceList,
       resourceSchedule: store.state.resourceSchedule,
-      showTaskAdd: false,
+      showTaskAdd: store.state.modalControls.isAddTaskFormShowing,
       showTaskDetail: false,
       taskDetail: {},
       resourceSchedule: {},
@@ -56,6 +60,11 @@ export default {
 	  isNewTaskAdded: false,
 	  emma: store.state.emma
     };
+  },
+  computed: {
+    isAddTaskFormShowing: function() {
+      return store.state.modalControls.isAddTaskFormShowing;
+    }
   },
   created() {
     EventBus.$on("showTaskDetails", this.handleTaskDetailsModalOpen);
