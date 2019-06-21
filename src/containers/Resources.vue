@@ -1,7 +1,7 @@
 <template>
   <div class="resources">
     <resources-resource-row
-      v-for="resource in tasks"
+      v-for="resource in resourceTasks"
       :key="resource.resourceId"
       :resourceObj="resource"
     ></resources-resource-row>
@@ -10,16 +10,15 @@
 
 <script>
 import Resource from "../components/Resource/Resource.vue";
-import axios from "axios";
 import { store } from "../utils/store.js";
 
 export default {
-  props: ["isNewTaskAdded", ],
   data: function() {
-    return {};
+    return {
+    };
   },
   computed: {
-    tasks: function() {
+    resourceTasks: function() {
       return store.state.resourceControls.resourceTaskList;
     }
   },

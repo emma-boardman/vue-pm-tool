@@ -20,10 +20,10 @@
       :showModal="isTaskDetailShowing"
       class="modal-task-detail"
     >
-      <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
+    <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
-    <layout-calendar :isNewTaskAdded="this.isNewTaskAdded"></layout-calendar>
+    <layout-calendar></layout-calendar>
     <layout-footer></layout-footer>
   </div>
 </template>
@@ -47,17 +47,13 @@ export default {
     return {
       store,
       isResourceTasksLoading: store.state.isResourceTasksLoading,
-      resourceTasks: store.state.resourceTasks,
       isTaskFormPresetsLoading: store.state.isTaskFormPresetsLoading,
       projectsList: store.state.projectsList,
       resourceList: store.state.resourceList,
-      resourceSchedule: store.state.resourceSchedule,
       taskDetail: {},
       resourceSchedule: {},
       firstAvailableStartTime: "",
-      firstAvailableEndTime: "",
-      isNewTaskAdded: false,
-      emma: store.state.emma
+      firstAvailableEndTime: ""
     };
   },
   computed: {
@@ -218,16 +214,6 @@ export default {
         if (j == subarr.length) return i;
       }
       return -1;
-    },
-    postNewTask(task) {
-      axios
-        .post("http://40414669.wdd.napier.ac.uk/inc/postNewTask.php", task)
-        .then(response => {
-          console.log(response);
-          store.state.resourceControls.resourceTaskList = null;
-          store.fetchResourceTasks();
-        })
-        .catch(error => console.log(error));
     }
   }
 };

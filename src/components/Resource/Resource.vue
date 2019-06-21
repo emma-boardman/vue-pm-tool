@@ -9,24 +9,30 @@
       class="resource-weekly-grid"
       :tasks="tasks"
       @openTaskDetails="handleTaskClick"
-    ></resource-weekly-grid>
+    >
+    </resource-weekly-grid>
   </div>
 </template>
-
 
 <script>
 import ResourceName from "./ResourceName/ResourceName.vue";
 import WeeklyGrid from "../Calendar/WeeklyGrid/WeeklyGrid.vue";
+ import { store } from '../../utils/store.js';
+
 export default {
   props: ["resourceObj"],
-  components: {
-    ResourceResourceName: ResourceName,
-    ResourceWeeklyGrid: WeeklyGrid
+  data() {
+    return {
+    }
   },
-  computed: {
+    computed: {
     tasks: function() {
       return this.resourceObj.tasks;
     }
+  },
+  components: {
+    ResourceResourceName: ResourceName,
+    ResourceWeeklyGrid: WeeklyGrid
   },
   methods: {
     handleTaskClick: function(task) {

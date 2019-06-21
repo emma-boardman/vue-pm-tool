@@ -13,6 +13,12 @@
       @click.native="emitTaskDetails(task)"
       :style="generateTaskClasses(task)"
     >
+    <!-- <weekly-grid-task 
+      v-for="task in tasks" 
+      :key="task.taskId"
+      class="task"
+      :taskInfo="task"
+      >  -->
       <p class="clientName" v-if="task.taskEstimate > 3">{{ task.clientName }}</p>
       <p class="clientName" v-else>{{ task.clientName.substring(0,2) + ".." }}</p>
       <p class="title" v-if="task.taskEstimate > 3">{{ task.taskAffectedArea }}</p>
@@ -26,9 +32,14 @@ import DayDate from "./DayDate/DayDate.vue";
 import Task from "../../Task/Task.vue";
 import { EventBus } from "../../../event-bus.js";
 import { store } from "../../../utils/store.js";
+import axios from "axios";
 
 export default {
   props: ["tasks"],
+  data() {
+    return {
+    }
+  },
   computed: {
     currentWeek: function() {
       return this.getWeeklyArray();
@@ -102,7 +113,10 @@ export default {
         return "marginRight: 5px";
       }
     },
-    generateTaskClasses(task) {
+    emitTaskDetails: function(task) {
+      EventBus.$emit("showTaskDetails", task);
+    },
+     generateTaskClasses(task) {
       let color;
       switch (task.clientName) {
         case "Delos":
@@ -128,13 +142,13 @@ export default {
       let dynamicStyles = {
         backgroundColor: color,
         gridColumnStart: task.taskStartTime,
+        gridRowStart: "row1-start",
+        gridRowEnd: "row1-end",
         gridColumnEnd: task.taskEndTime,
-        marginRight: marginRight
+        marginRight: marginRight,
+        zIndex: 2,
       };
       return dynamicStyles;
-    },
-    emitTaskDetails: function(task) {
-      EventBus.$emit("showTaskDetails", task);
     }
   }
 };
@@ -145,16 +159,17 @@ export default {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 0;
+  /* grid-template-rows: auto; */
+  grid-template-rows: [row1-start] 0% [row1-end] 100%;
   grid-template-columns:
-    [Mon0900] 2.5%
-    [Mon1000] 2.5%
-    [Mon1100] 2.5%
-    [Mon1200] 2.5%
-    [Mon1300] 2.5%
-    [Mon1400] 2.5%
-    [Mon1500] 2.5%
-    [Mon1600] 2.5%
+    [Mon0900] 2%
+    [Mon1000] 2%
+    [Mon1100] 2%
+    [Mon1200] 2%
+    [Mon1300] 2%
+    [Mon1400] 2%
+    [Mon1500] 2%
+    [Mon1600] 2%
     [Mon1700] 0%
     [Tues0900] 2%
     [Tues1000] 2%
@@ -165,38 +180,41 @@ export default {
     [Tues1500] 2%
     [Tues1600] 2%
     [Tues1700] 0%
-    [Wed0900] 2.5%
-    [Wed1000] 2.5%
-    [Wed1100] 2.5%
-    [Wed1200] 2.5%
-    [Wed1300] 2.5%
-    [Wed1400] 2.5%
-    [Wed1500] 2.5%
-    [Wed1600] 2.5%
+    [Wed0900] 2%
+    [Wed1000] 2%
+    [Wed1100] 2%
+    [Wed1200] 2%
+    [Wed1300] 2%
+    [Wed1400] 2%
+    [Wed1500] 2%
+    [Wed1600] 2%
     [Wed1700] 0%
-    [Thurs0900] 2.5%
-    [Thurs1000] 2.5%
-    [Thurs1100] 2.5%
-    [Thurs1200] 2.5%
-    [Thurs1300] 2.5%
-    [Thurs1400] 2.5%
-    [Thurs1500] 2.5%
-    [Thurs1600] 2.5%
+    [Thurs0900] 2%
+    [Thurs1000] 2%
+    [Thurs1100] 2%
+    [Thurs1200] 2%
+    [Thurs1300] 2%
+    [Thurs1400] 2%
+    [Thurs1500] 2%
+    [Thurs1600] 2%
     [Thurs1700] 0%
-    [Fri0900] 2.5%
-    [Fri1000] 2.5%
-    [Fri1100] 2.5%
-    [Fri1200] 2.5%
-    [Fri1300] 2.5%
-    [Fri1400] 2.5%
-    [Fri1500] 2.5%
-    [Fri1600] 2.5%
+    [Fri0900] 2%
+    [Fri1000] 2%
+    [Fri1100] 2%
+    [Fri1200] 2%
+    [Fri1300] 2%
+    [Fri1400] 2%
+    [Fri1500] 2%
+    [Fri1600] 2%
     [Fri1700] 0%;
 }
 
 .weekday {
   height: var(--resource-row-height);
   border-right: 1px var(--dark-grey) solid;
+  grid-row-start: row1-start;
+  grid-row-end: row1-end;
+  z-index: 1
 }
 
 .monday {
