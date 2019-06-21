@@ -114,8 +114,8 @@
 </template>
 
 <script>
-import { store } from '../../../utils/store.js'
- 
+import { store } from "../../../utils/store.js";
+
 export default {
   props: ["resources", "availableTimes", "projects"],
   data() {
@@ -144,10 +144,11 @@ export default {
     }
   },
   methods: {
-    handleFormSubmission: function(task) {
-      console.log("handle form submission: " + task);
-      // this.$emit("submitNewTask", task);
-      store.postNewTask(task);
+     handleFormSubmission: async function(task) {
+      await store.postNewTask(task);
+      Object.keys(this.task).forEach(key => {
+        this.task[key] = '';
+      })
     }
   }
 };
