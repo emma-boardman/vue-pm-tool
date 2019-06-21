@@ -164,50 +164,50 @@ export default {
   /* grid-template-rows: auto; */
   grid-template-rows: [row1-start] 0% [row1-end] 100%;
   grid-template-columns:
-    [Mon0900] 2%
-    [Mon1000] 2%
-    [Mon1100] 2%
-    [Mon1200] 2%
-    [Mon1300] 2%
-    [Mon1400] 2%
-    [Mon1500] 2%
-    [Mon1600] 2%
+    [Mon0900] 2.5%
+    [Mon1000] 2.5%
+    [Mon1100] 2.5%
+    [Mon1200] 2.5%
+    [Mon1300] 2.5%
+    [Mon1400] 2.5%
+    [Mon1500] 2.5%
+    [Mon1600] 2.5%
     [Mon1700] 0%
-    [Tues0900] 2%
-    [Tues1000] 2%
-    [Tues1100] 2%
-    [Tues1200] 2%
-    [Tues1300] 2%
-    [Tues1400] 2%
-    [Tues1500] 2%
-    [Tues1600] 2%
+    [Tues0900] 2.5%
+    [Tues1000] 2.5%
+    [Tues1100] 2.5%
+    [Tues1200] 2.5%
+    [Tues1300] 2.5%
+    [Tues1400] 2.5%
+    [Tues1500] 2.5%
+    [Tues1600] 2.5%
     [Tues1700] 0%
-    [Wed0900] 2%
-    [Wed1000] 2%
-    [Wed1100] 2%
-    [Wed1200] 2%
-    [Wed1300] 2%
-    [Wed1400] 2%
-    [Wed1500] 2%
-    [Wed1600] 2%
+    [Wed0900] 2.5%
+    [Wed1000] 2.5%
+    [Wed1100] 2.5%
+    [Wed1200] 2.5%
+    [Wed1300] 2.5%
+    [Wed1400] 2.5%
+    [Wed1500] 2.5%
+    [Wed1600] 2.5%
     [Wed1700] 0%
-    [Thurs0900] 2%
-    [Thurs1000] 2%
-    [Thurs1100] 2%
-    [Thurs1200] 2%
-    [Thurs1300] 2%
-    [Thurs1400] 2%
-    [Thurs1500] 2%
-    [Thurs1600] 2%
+    [Thurs0900] 2.5%
+    [Thurs1000] 2.5%
+    [Thurs1100] 2.5%
+    [Thurs1200] 2.5%
+    [Thurs1300] 2.5%
+    [Thurs1400] 2.5%
+    [Thurs1500] 2.5%
+    [Thurs1600] 2.5%
     [Thurs1700] 0%
-    [Fri0900] 2%
-    [Fri1000] 2%
-    [Fri1100] 2%
-    [Fri1200] 2%
-    [Fri1300] 2%
-    [Fri1400] 2%
-    [Fri1500] 2%
-    [Fri1600] 2%
+    [Fri0900] 2.5%
+    [Fri1000] 2.5%
+    [Fri1100] 2.5%
+    [Fri1200] 2.5%
+    [Fri1300] 2.5%
+    [Fri1400] 2.5%
+    [Fri1500] 2.5%
+    [Fri1600] 2.5%
     [Fri1700] 0%;
 }
 
