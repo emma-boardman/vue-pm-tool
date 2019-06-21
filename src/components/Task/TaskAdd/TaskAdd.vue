@@ -107,7 +107,7 @@
       </div>
       <div class="bottom-on-desktop">
         <button type="submit" class="add-task-btn">Add Task</button>
-        <p class="cancel-btn" @click="$emit('closeModal')">Cancel</p>
+        <p class="cancel-btn" @click="closeForm">Cancel</p>
       </div>
     </form>
   </div>
@@ -117,7 +117,11 @@
 import { store } from "../../../utils/store.js";
 
 export default {
-  props: ["resources", "availableTimes", "projects"],
+  props: {
+    resources: Array,
+    availableTimes: Object,
+    projects: Array
+  },
   data() {
     return {
       task: {
@@ -134,7 +138,7 @@ export default {
         taskStartTime: "",
         taskEndTime: ""
       },
-      impactOptions: ["Low", "High", "Medium"]
+      impactOptions: ["Low", "Medium", "High"]
     };
   },
   watch: {
@@ -144,11 +148,18 @@ export default {
     }
   },
   methods: {
-     handleFormSubmission: async function(task) {
+    handleFormSubmission: async function(task) {
       await store.postNewTask(task);
+      this.clearFormFields();
+    },
+    clearFormFields: function() {
       Object.keys(this.task).forEach(key => {
-        this.task[key] = '';
-      })
+        this.task[key] = "";
+      });
+    },
+    closeForm(){
+      this.$emit('closeModal');
+      this.clearFormFields();
     }
   }
 };

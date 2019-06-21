@@ -27,7 +27,9 @@
 
 <script>
 export default {
-  props: ["task"],
+  props: {
+    task: Object
+  },
   methods: {
     generateClientColourClasses(clientName) {
       let color;

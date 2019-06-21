@@ -6,7 +6,9 @@
 import { store } from "../../../utils/store.js";
 
 export default {
-  props: ["showModal"]
+  props: {
+    showModal: Boolean
+  },
 };
 </script>
 

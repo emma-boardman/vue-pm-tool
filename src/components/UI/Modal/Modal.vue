@@ -11,7 +11,9 @@
 import Backdrop from "../Backdrop/Backdrop.vue";
 
 export default {
-  props: ["showModal"],
+  props: {
+    showModal: Boolean
+  },
   components: {
     modalBackdrop: Backdrop
   }

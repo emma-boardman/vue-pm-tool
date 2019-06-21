@@ -8,7 +8,11 @@
 
 <script>
 export default {
-  props: ["name", "job", "contractType"]
+  props: {
+    name: String,
+    job: String,
+    contractType: String
+  }
 };
 </script>
 

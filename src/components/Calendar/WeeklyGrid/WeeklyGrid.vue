@@ -35,7 +35,9 @@ import { store } from "../../../utils/store.js";
 import axios from "axios";
 
 export default {
-  props: ["tasks"],
+  props: {
+    tasks: Array
+  },
   data() {
     return {
     }

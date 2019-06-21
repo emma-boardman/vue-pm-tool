@@ -20,7 +20,9 @@ import WeeklyGrid from "../Calendar/WeeklyGrid/WeeklyGrid.vue";
  import { store } from '../../utils/store.js';
 
 export default {
-  props: ["resourceObj"],
+  props: {
+    resourceObj: Object
+  },
   data() {
     return {
     }
