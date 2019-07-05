@@ -81,6 +81,7 @@ export default {
     async fetchTaskFormPresets() {
       this.isTaskFormPresetsLoading = true;
       const { data } = await TaskRepository.getTaskFormPresets();
+      console.log(data);
       this.isTaskFormPresetsLoading = false;
       this.projectsList = data["clientProjects"];
       this.resourceList = data["resources"];

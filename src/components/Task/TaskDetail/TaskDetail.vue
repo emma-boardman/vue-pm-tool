@@ -1,4 +1,5 @@
 
+
 <template>
   <div class="task-detail">
     <div class="task-detail__top-bar" :style="generateClientColourClasses(task.clientName)">

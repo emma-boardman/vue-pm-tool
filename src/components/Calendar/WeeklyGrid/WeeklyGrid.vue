@@ -13,12 +13,6 @@
       @click.native="emitTaskDetails(task)"
       :style="generateTaskClasses(task)"
     >
-    <!-- <weekly-grid-task 
-      v-for="task in tasks" 
-      :key="task.taskId"
-      class="task"
-      :taskInfo="task"
-      >  -->
       <p class="clientName" v-if="task.taskEstimate > 3">{{ task.clientName }}</p>
       <p class="clientName" v-else>{{ task.clientName.substring(0,2) + ".." }}</p>
       <p class="title" v-if="task.taskEstimate > 3">{{ task.taskAffectedArea }}</p>
