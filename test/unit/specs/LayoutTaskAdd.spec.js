@@ -20,9 +20,8 @@ describe('LayoutTaskAdd', () => {
           resourceName: "Gerrard"
         }],
         availableTimes: {
-          endTime: "Fri1700",
-          startTime: "Fri1300"
-        }
+          startTime: 'Fri1300', 
+          endTime: 'Fri1700'}
       }
     })
     expect(wrapper.props().projects[0].clientName).toBe('Edinburgh Napier University')
@@ -44,26 +43,11 @@ describe('LayoutTaskAdd', () => {
 
 describe('LayoutTaskAdd', () => {
   test('should call handleFormSubmisison when Add Task is clicked', () => {
-    const wrapper = mount(LayoutTaskAdd, {
-      methods: {
-        handleFormSubmission(Task)
-      }
-    })
+    const wrapper = mount(LayoutTaskAdd)
+    const handleFormSubmissionStub = jest.fn();
 
+    wrapper.setMethods({ handleFormSubmission: handleFormSubmissionStub })
     wrapper.find('form').trigger('submit.prevent')
-    expect(handleFormSubmission(Task)).toHaveBeenCalled()
-  })
-})
-
-
-describe('LayoutTaskAdd', () => {
-  it('should call handleFormSubmisison when Add Task is clicked', () => {
-    const handleFormSubmission = jest.fn()
-    const wrapper = mount(LayoutTaskAdd);
-
-    wrapper.vm.$on('click', handleFormSubmission)
-    wrapper.vm.click('Clean the car');
-
-    expect(handleFormSubmission).toBeCalledWith('Clean the car')
+    expect(handleFormSubmissionStub.called).toBe(true)
   })
 });

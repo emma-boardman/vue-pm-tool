@@ -1,14 +1,13 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import FooterAddButton from '../../../src/components/Footer/AddButton/AddButton'
 
+describe('LayoutTaskAdd', () => {
+    test('calls handleAddTaskClick when image is clicked', () => {
+        const wrapper = mount(FooterAddButton)
+        const handleAddTaskClickStub = jest.fn();
 
-test('calls handleAddTaskClick when image is clicked', () => {
-    const handleAddTaskClick = jest.fn() 
-    const wrapper = shallowMount(FooterAddButton, {
-        methods: {
-             handleAddTaskClick
-            }
-        });
-    wrapper.find('img').trigger('click')             
-    expect(handleAddTaskClick).toHaveBeenCalled()                  
-  })
+        wrapper.setMethods({ handleAddTaskClick: handleAddTaskClickStub })
+        wrapper.find('img').trigger('click')
+        expect(handleAddTaskClickStub).toHaveBeenCalled();
+    })
+})
