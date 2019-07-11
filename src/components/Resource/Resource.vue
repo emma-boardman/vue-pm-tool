@@ -38,7 +38,10 @@ export default {
   },
   methods: {
     handleTaskClick: function(task) {
+      var t0 = performance.now();
       console.log(task);
+      var t1 = performance.now();
+      console.log("Call to handleTaskClick took " + (t1 - t0) + " milliseconds.");
     }
   }
 };

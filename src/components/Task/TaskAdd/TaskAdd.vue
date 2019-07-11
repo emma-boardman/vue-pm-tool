@@ -18,11 +18,11 @@
             </li>
             <li class="form-row">
               <label for="taskTitle">Task Title</label>
-              <input type="text" id="taskTitle" v-model="task.taskTitle" required>
+              <input type="text" id="taskTitle" v-model="task.taskTitle" required />
             </li>
             <li class="form-row">
               <label for="taskArea">Affected area</label>
-              <input type="text" id="taskArea" v-model="task.taskAffectedArea" required>
+              <input type="text" id="taskArea" v-model="task.taskAffectedArea" required />
             </li>
             <li class="form-row">
               <label for="taskErroneousBehaviour">Erroneous behaviour</label>
@@ -56,11 +56,11 @@
             </li>
             <li class="form-row">
               <label for="taskTimeNoticed">Time noticed</label>
-              <input type="text" id="taskTimeNoticed" v-model="task.taskTimeNoticed" required>
+              <input type="text" id="taskTimeNoticed" v-model="task.taskTimeNoticed" required />
             </li>
             <li class="form-row">
               <label for="taskRecentChanges">Recent Changes</label>
-              <input type="text" id="taskRecentChanges" v-model="task.taskRecentChanges" required>
+              <input type="text" id="taskRecentChanges" v-model="task.taskRecentChanges" required />
             </li>
             <li class="form-row">
               <label for="resourceId">Resource</label>
@@ -80,7 +80,7 @@
                 v-model="task.taskEstimate"
                 @blur="$emit('handleEstimate', {resourceId: task.taskResource, taskEstimate: task.taskEstimate})"
                 required
-              >
+              />
             </li>
             <li class="form-row">
               <label for="taskSchedule">First Available Time Slot</label>
@@ -93,12 +93,12 @@
                     readonly
                     v-model="availableTimes.startTime"
                     :placeholder="availableTimes.startTime"
-                  > -
+                  /> -
                   <input
                     readonly
                     v-model="availableTimes.endTime"
                     :placeholder="availableTimes.endTime"
-                  >
+                  />
                 </div>
               </div>
             </li>
@@ -149,17 +149,30 @@ export default {
   },
   methods: {
     handleFormSubmission: async function(task) {
+      var t0 = performance.now();
       await store.postNewTask(task);
       this.clearFormFields();
+      var t1 = performance.now();
+      console.log(
+        "Call to handleFormSubmission took " + (t1 - t0) + " milliseconds."
+      );
     },
     clearFormFields: function() {
+      var t0 = performance.now();
       Object.keys(this.task).forEach(key => {
         this.task[key] = "";
       });
+      var t1 = performance.now();
+      console.log(
+        "Call to clearFormFields took " + (t1 - t0) + " milliseconds."
+      );
     },
-    closeForm(){
-      this.$emit('closeModal');
+    closeForm() {
+      var t0 = performance.now();
+      this.$emit("closeModal");
       this.clearFormFields();
+      var t1 = performance.now();
+      console.log("Call to closeForm took " + (t1 - t0) + " milliseconds.");
     }
   }
 };

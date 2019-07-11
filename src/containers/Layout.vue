@@ -21,7 +21,7 @@
       :showModal="isTaskDetailShowing"
       class="modal-task-detail"
     >
-    <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
+      <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
     <layout-calendar></layout-calendar>
@@ -60,10 +60,10 @@ export default {
   computed: {
     isAddTaskFormShowing: function() {
       return store.state.modalControls.isAddTaskFormShowing;
-     },
-     isTaskDetailShowing: function() {
-       return store.state.modalControls.isTaskDetailShowing;
-     },
+    },
+    isTaskDetailShowing: function() {
+      return store.state.modalControls.isTaskDetailShowing;
+    }
   },
   created() {
     EventBus.$on("showTaskDetails", this.handleTaskDetailsModalOpen);
@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     async fetchTaskFormPresets() {
+      var t0 = performance.now();
       this.isTaskFormPresetsLoading = true;
       const { data } = await TaskRepository.getTaskFormPresets();
       console.log(data);
@@ -89,6 +90,7 @@ export default {
       this.handleTaskPresets();
     },
     async fetchResourceSchedule(resourceAndEstimate) {
+      var t0 = performance.now();
       this.isResourceScheduleLoading = true;
       const { data } = await ResourceRepository.getResourceSchedule(
         resourceAndEstimate.resourceId
@@ -96,8 +98,13 @@ export default {
       this.isResourceScheduleLoading = false;
       this.resourceSchedule = data;
       this.handleResourceAvailability(resourceAndEstimate);
+      var t1 = performance.now();
+      console.log(
+        "Call to fetchTaskFormPresets took " + (t1 - t0) + " milliseconds."
+      );
     },
     handleTaskPresets: function() {
+      var t0 = performance.now();
       let projectsArray = this.projectsList.reduce(function(
         formPresetsArray,
         clientObj
@@ -114,28 +121,62 @@ export default {
       },
       []);
       this.projectsList = projectsArray;
+      var t1 = performance.now();
+      console.log(
+        "Call to handleTaskPresets took " + (t1 - t0) + " milliseconds."
+      );
     },
     handleTaskAddModalClose: function() {
+      var t0 = performance.now();
       store.hideAddTaskForm();
+      var t1 = performance.now();
+      console.log(
+        "Call to handleTaskAddModalClose took " + (t1 - t0) + " milliseconds."
+      );
     },
     handleTaskAddModalOpen: function() {
+      var t0 = performance.now();
       this.showTaskAdd = true;
+      var t1 = performance.now();
+      console.log(
+        "Call to handleTaskAddModalOpen took " + (t1 - t0) + " milliseconds."
+      );
     },
     handleTaskDetailsModalOpen: function(task) {
+      var t0 = performance.now();
       store.state.modalControls.isTaskDetailShowing = true;
       this.taskDetail = task;
+      var t1 = performance.now();
+      console.log(
+        "Call to handleTaskDetailsModalOpen took " +
+          (t1 - t0) +
+          " milliseconds."
+      );
     },
     handleTaskDetailModalClose: function() {
+      var t0 = performance.now();
       store.hideTaskDetail();
+      var t1 = performance.now();
+      console.log(
+        "Call to handleTaskDetailModalClose took " +
+          (t1 - t0) +
+          " milliseconds."
+      );
     },
     handleFormSubmission: function(task) {
+      var t0 = performance.now();
       console.log(task);
       this.handleTaskAddModalClose();
       this.postNewTask(task);
+      var t1 = performance.now();
+      console.log(
+        "Call to handleFormSubmission took " + (t1 - t0) + " milliseconds."
+      );
       // this.firstAvailableStartTime ='';
       // this.firstAvailableEndTime ='';
     },
     handleResourceAvailability: function(resourceAndEstimate) {
+      var t0 = performance.now();
       const weeklyAvailability = Array(45).fill(true);
       const weeklyTimeSlots = [
         "Mon0900",
@@ -208,13 +249,24 @@ export default {
         parseInt(indexOfFirstAvailability) +
         parseInt(resourceAndEstimate.taskEstimate);
       this.firstAvailableEndTime = weeklyTimeSlots[endTime];
+      var t1 = performance.now();
+      console.log(
+        "Call to handleResourceAvailability took " +
+          (t1 - t0) +
+          " milliseconds."
+      );
     },
     findAvailability(arr, subarr) {
+      var t0 = performance.now();
       for (var i = 0; i < 1 + (arr.length - subarr.length); i++) {
         var j = 0;
         for (; j < subarr.length; j++) if (arr[i + j] !== subarr[j]) break;
         if (j == subarr.length) return i;
       }
+      var t1 = performance.now();
+      console.log(
+        "Call to findAvailability took " + (t1 - t0) + " milliseconds."
+      );
       return -1;
     }
   }

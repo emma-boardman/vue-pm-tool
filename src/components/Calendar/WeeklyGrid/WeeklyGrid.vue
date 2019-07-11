@@ -33,8 +33,7 @@ export default {
     tasks: Array
   },
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
     currentWeek: function() {
@@ -50,13 +49,17 @@ export default {
       return new Date();
     },
     getMonday: function() {
+      var t0 = performance.now();
       let currentDate = this.getCurrentDate(),
         currentDay = currentDate.getDay(),
         diff = currentDate.getDate() - currentDay + (currentDay == 0 ? -6 : 1),
         monday = new Date(currentDate.setDate(diff));
+      var t1 = performance.now();
+      console.log("Call to getMonday took " + (t1 - t0) + " milliseconds.");
       return monday;
     },
     getWeeklyArray: function() {
+      var t0 = performance.now();
       let monday = this.getMonday(),
         currentWeek = [];
       const months = [
@@ -88,9 +91,12 @@ export default {
           months[tempDate.getMonth()];
         currentWeek.push(dateString);
       }
+      var t1 = performance.now();
+      console.log("Call to getWeeklyArray took " + (t1 - t0) + " milliseconds.");
       return currentWeek;
     },
     getDateOrdinal: function(date) {
+      var t0 = performance.now();
       if (date > 3 && date < 21) return "th";
       switch (date % 10) {
         case 1:
@@ -102,17 +108,26 @@ export default {
         default:
           return "th";
       }
+      var t1 = performance.now();
+      console.log("Call to getDateOrdinal took " + (t1 - t0) + " milliseconds.");
     },
     addMargin: function(endDayTime) {
+      var t0 = performance.now();
       if (endDayTime.includes("1700")) {
         console.log("true");
+        var t1 = performance.now();
+      console.log("Call to addMargin took " + (t1 - t0) + " milliseconds.");
         return "marginRight: 5px";
       }
     },
     emitTaskDetails: function(task) {
+      var t0 = performance.now();
       EventBus.$emit("showTaskDetails", task);
+      var t1 = performance.now();
+      console.log("Call to emitTaskDetails took " + (t1 - t0) + " milliseconds.");
     },
-     generateTaskClasses(task) {
+    generateTaskClasses(task) {
+      var t0 = performance.now();
       let color;
       switch (task.clientName) {
         case "Delos":
@@ -142,8 +157,10 @@ export default {
         gridRowEnd: "row1-end",
         gridColumnEnd: task.taskEndTime,
         marginRight: marginRight,
-        zIndex: 2,
+        zIndex: 2
       };
+      var t1 = performance.now();
+      console.log("Call to generateTaskClasses took " + (t1 - t0) + " milliseconds.");
       return dynamicStyles;
     }
   }
@@ -210,7 +227,7 @@ export default {
   border-right: 1px var(--dark-grey) solid;
   grid-row-start: row1-start;
   grid-row-end: row1-end;
-  z-index: 1
+  z-index: 1;
 }
 
 .monday {

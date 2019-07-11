@@ -10,7 +10,10 @@ import { store } from "../../../utils/store.js";
 export default {
   methods: {
     handleAddTaskClick: function() {
+      var t0 = performance.now();
       store.showAddTaskForm();
+      var t1 = performance.now();
+      console.log("Call to handleAddTaskClick took " + (t1 - t0) + " milliseconds.");
     }
   }
 };
