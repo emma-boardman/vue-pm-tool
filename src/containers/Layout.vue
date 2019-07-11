@@ -6,6 +6,7 @@
       @closeModal="handleTaskAddModalClose"
     >
       <layout-task-add
+        class="modal-task-add"
         :projects="this.projectsList"
         :resources="this.resourceList"
         @submitNewTask="handleFormSubmission"
