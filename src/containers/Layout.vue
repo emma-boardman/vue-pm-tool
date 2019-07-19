@@ -103,29 +103,7 @@ export default {
         "Call to fetchTaskFormPresets took " + (t1 - t0) + " milliseconds."
       );
     },
-    handleTaskPresets: function() {
-      var t0 = performance.now();
-      let projectsArray = this.projectsList.reduce(function(
-        formPresetsArray,
-        clientObj
-      ) {
-        for (let j = 0; j < clientObj.projects.length; j++) {
-          let clientObject = {
-            clientName: clientObj.clientName,
-            projectName: clientObj.projects[j].projectTitle,
-            projectId: clientObj.projects[j].projectId
-          };
-          formPresetsArray.push(clientObject);
-        }
-        return formPresetsArray;
-      },
-      []);
-      this.projectsList = projectsArray;
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskPresets took " + (t1 - t0) + " milliseconds."
-      );
-    },
+    
     handleTaskAddModalClose: function() {
       var t0 = performance.now();
       store.hideAddTaskForm();

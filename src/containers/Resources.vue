@@ -10,17 +10,34 @@
 
 <script>
 import Resource from "../components/Resource/Resource.vue";
-import { store } from "../utils/store.js";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from '../store/types'
 
 export default {
   data: function() {
-    return {
-    };
+    return {};
   },
   computed: {
-    resourceTasks: function() {
-      return store.state.resourceControls.resourceTaskList;
+    ...mapGetters({
+      resourceTasks: types.ALL_TASKS,
+      clientResourceTasks: types.CLIENT_TASKS,
+      projectList: types.PROJECT_LIST,
+      resourceList: types.RESOURCE_LIST
+    })
+  },
+  created() {
+    fetchResourceTasks: {
+      this.$store.dispatch('fetchResourceTasks')
     }
+    fetchClientResourceTasks: {
+      this.$store.dispatch('fetchClientResourceTasks')
+    }
+    fetchTaskOptions: {
+      this.$store.dispatch('fetchTaskOptions')
+    }
+  },
+  methods: {
+    ...mapActions(['fetchResourceTasks', 'fetchClientResourceTasks', 'fetchTaskOptions']),
   },
   components: {
     ResourcesResourceRow: Resource
