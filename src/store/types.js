@@ -2,6 +2,8 @@ export const ALL_TASKS = 'tasks/ALL_TASKS';
 export const CLIENT_TASKS = 'tasks/CLIENT_TASKS';
 export const PROJECT_LIST = 'tasks/PROJECT_LIST';
 export const RESOURCE_LIST = 'tasks/RESOURCE_LIST';
+export const SHOW_TASK_DETAILS = 'tasks/SHOW_TASK_DETAILS';
+export const SHOW_TASK_NEW = 'tasks/SHOW_TASK_NEW';
 
 export const MUTATE_UPDATE_TASKS = 'tasks/MUTATE_UPDATE_TASKS';
 export const MUTATE_UPDATE_CLIENT_TASKS = 'tasks/MUTATE_UPDATE_CLIENT_TASKS';
@@ -9,8 +11,11 @@ export const MUTATE_TASK_LOADING = 'tasks/MUTATE_TASK_LOADING';
 export const MUTATE_CLIENT_TASK_LOADING = 'tasks/MUTATE_CLIENT_TASK_LOADING';
 export const MUTATE_TASK_OPTIONS = 'tasks/MUTATE_TASK_OPTIONS';
 export const MUTATE_TASK_OPTIONS_LOADING = 'tasks/MUTATE_TASK_OPTIONS_LOADING';
+export const MUTATE_SHOW_TASK_DETAILS = 'tasks/MUTATE_TASK_OPTIONS_LOADING';
+export const MUTATE_SHOW_TASK_NEW= 'tasks/MUTATE_SHOW_TASK_NEW';
 
 export const FETCH_ALL_TASKS = 'tasks/FETCH_ALL_TASKS';
 export const FETCH_CLIENT_TASKS = 'clients/FETCH_CLIENT_TASKS';
 export const FETCH_TASK_OPTIONS = 'clients/FETCH_TASK_OPTIONS';
+
 

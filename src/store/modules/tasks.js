@@ -8,13 +8,15 @@ const state = {
   isTasksLoading: false,
   projectList: [],
   resourceList: [],
-  isTaskOptionsLoading: false 
+  isTaskOptionsLoading: false,
+  showTaskNew: false
 };
 
 const getters = {
   [types.ALL_TASKS]: state => state.tasks,
   [types.PROJECT_LIST]: state => state.projectList,
-  [types.RESOURCE_LIST]: state => state.resourceList
+  [types.RESOURCE_LIST]: state => state.resourceList,
+  [types.SHOW_TASK_NEW]: state => state.showTaskNew,
 };
 
 const mutations = {
@@ -31,6 +33,10 @@ const mutations = {
   },
   [types.MUTATE_TASK_OPTIONS_LOADING]: (state, loading) => {
       state.isTaskOptionsLoading = loading
+  },
+  [types.MUTATE_SHOW_TASK_NEW]: (state) => {
+      console.log("I AM CLICKED: ", state.showTaskNew)
+      state.showTaskNew = !state.showTaskNew
   }
 };
 

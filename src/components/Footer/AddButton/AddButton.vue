@@ -5,18 +5,17 @@
 </template>
 
 <script>
-import { store } from "../../../utils/store.js";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from '../../../store/types'
+
 
 export default {
   methods: {
-    handleAddTaskClick: function() {
-      var t0 = performance.now();
-      store.showAddTaskForm();
-      var t1 = performance.now();
-      console.log("Call to handleAddTaskClick took " + (t1 - t0) + " milliseconds.");
+    ...mapMutations({
+      handleAddTaskClick: types.MUTATE_SHOW_TASK_NEW
+    })
     }
   }
-};
 </script>
 
 <style scoped>

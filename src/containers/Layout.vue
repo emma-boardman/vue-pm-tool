@@ -3,17 +3,9 @@
     <layout-modal
       :if="isAddTaskFormShowing"
       :showModal="isAddTaskFormShowing"
-      @closeModal="handleTaskAddModalClose"
+      @closeModal="handleTaskAddModal"
     >
-      <layout-task-add
-        class="modal-task-add"
-        :projects="this.projectsList"
-        :resources="this.resourceList"
-        @submitNewTask="handleFormSubmission"
-        @handleEstimate="fetchResourceSchedule"
-        @closeModal="handleTaskAddModalClose"
-        :availableTimes="{startTime: this.firstAvailableStartTime, endTime: this.firstAvailableEndTime}"
-      ></layout-task-add>
+      <layout-task-new />
     </layout-modal>
     <layout-modal
       :if="isTaskDetailShowing"
@@ -34,12 +26,15 @@ import Header from "../components/Header/Header.vue";
 import Calendar from "../components/Calendar/Calendar.vue";
 import Footer from "../components/Footer/Footer.vue";
 import Modal from "../components/UI/Modal/Modal.vue";
-import TaskAdd from "../components/Task/TaskAdd/TaskAdd.vue";
+import TaskNew from "../containers/TaskNew";
 import TaskDetail from "../components/Task/TaskDetail/TaskDetail.vue";
 import { EventBus } from "../event-bus.js";
 import { store } from "../utils/store.js";
 import axios from "axios";
 import { RepositoryFactory } from "../utils/RepositoryFactory";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from '../store/types'
+
 const ResourceRepository = RepositoryFactory.get("resources");
 const TaskRepository = RepositoryFactory.get("tasks");
 
@@ -58,9 +53,9 @@ export default {
     };
   },
   computed: {
-    isAddTaskFormShowing: function() {
-      return store.state.modalControls.isAddTaskFormShowing;
-    },
+    ...mapGetters({
+      isAddTaskFormShowing: types.SHOW_TASK_NEW
+    }),
     isTaskDetailShowing: function() {
       return store.state.modalControls.isTaskDetailShowing;
     }
@@ -75,10 +70,13 @@ export default {
     layoutCalendar: Calendar,
     layoutFooter: Footer,
     layoutModal: Modal,
-    layoutTaskAdd: TaskAdd,
+    layoutTaskNew: TaskNew,
     layoutTaskDetail: TaskDetail
   },
   methods: {
+    ...mapMutations({ 
+      handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW
+    }),
     async fetchTaskFormPresets() {
       var t0 = performance.now();
       this.isTaskFormPresetsLoading = true;
