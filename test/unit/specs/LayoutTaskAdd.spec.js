@@ -5,6 +5,11 @@ test('sanity test', () => {
   expect(true).toBe(true)
 })
 
+test("component is rendered", () => {
+  const wrapper = mount(LayoutTaskAdd)
+  expect(wrapper.element).toMatchSnapshot();
+})
+
 describe('LayoutTaskAdd', () => {
   test('should populate project list dropdown correctly', () => {
     const wrapper = mount(LayoutTaskAdd, {
@@ -20,8 +25,9 @@ describe('LayoutTaskAdd', () => {
           resourceName: "Gerrard"
         }],
         availableTimes: {
-          startTime: 'Fri1300', 
-          endTime: 'Fri1700'}
+          startTime: 'Fri1300',
+          endTime: 'Fri1700'
+        }
       }
     })
     expect(wrapper.props().projects[0].clientName).toBe('Edinburgh Napier University')

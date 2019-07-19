@@ -96,7 +96,6 @@ export default {
       return currentWeek;
     },
     getDateOrdinal: function(date) {
-      var t0 = performance.now();
       if (date > 3 && date < 21) return "th";
       switch (date % 10) {
         case 1:
@@ -108,8 +107,6 @@ export default {
         default:
           return "th";
       }
-      var t1 = performance.now();
-      console.log("Call to getDateOrdinal took " + (t1 - t0) + " milliseconds.");
     },
     addMargin: function(endDayTime) {
       var t0 = performance.now();

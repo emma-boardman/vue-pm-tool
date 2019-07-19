@@ -1,0 +1,712 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout component is rendered 1`] = `
+<div>
+  <div>
+    <div
+      class="backdrop"
+      style="display: none;"
+    />
+     
+    <div
+      class="modal modal--hide"
+    >
+      <div
+        class="add-task modal-task-add"
+      >
+        <h2>
+          Add New Task
+        </h2>
+         
+        <form>
+          <div
+            class="top-on-desktop"
+          >
+            <div
+              class="left-on-desktop"
+            >
+              <ul
+                class="form-wrapper"
+              >
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="projectId"
+                  >
+                    Project
+                  </label>
+                   
+                  <select
+                    id="taskProject"
+                    required="required"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskTitle"
+                  >
+                    Task Title
+                  </label>
+                   
+                  <input
+                    id="taskTitle"
+                    required="required"
+                    type="text"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskArea"
+                  >
+                    Affected area
+                  </label>
+                   
+                  <input
+                    id="taskArea"
+                    required="required"
+                    type="text"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskErroneousBehaviour"
+                  >
+                    Erroneous behaviour
+                  </label>
+                   
+                  <textarea
+                    cols="20"
+                    id="taskErroneousBehaviour"
+                    required="required"
+                    rows="2"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskExpectedBehaviour"
+                  >
+                    Expected behaviour
+                  </label>
+                   
+                  <textarea
+                    cols="20"
+                    id="taskExpectedBehaviour"
+                    required="required"
+                    rows="2"
+                  />
+                </li>
+              </ul>
+            </div>
+             
+            <div
+              class="right-on-desktop"
+            >
+              <ul
+                class="form-wrapper"
+              >
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskImpact"
+                  >
+                    Impact on business
+                  </label>
+                   
+                  <select
+                    id="taskImpact"
+                    required="required"
+                  >
+                    <option>
+                      Low
+                    </option>
+                    <option>
+                      Medium
+                    </option>
+                    <option>
+                      High
+                    </option>
+                  </select>
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskTimeNoticed"
+                  >
+                    Time noticed
+                  </label>
+                   
+                  <input
+                    id="taskTimeNoticed"
+                    required="required"
+                    type="text"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskRecentChanges"
+                  >
+                    Recent Changes
+                  </label>
+                   
+                  <input
+                    id="taskRecentChanges"
+                    required="required"
+                    type="text"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="resourceId"
+                  >
+                    Resource
+                  </label>
+                   
+                  <select
+                    id="resourceId"
+                    required="required"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskEstimate"
+                  >
+                    Estimate (hours)
+                  </label>
+                   
+                  <input
+                    id="taskEstimate"
+                    required="required"
+                    type="number"
+                  />
+                </li>
+                 
+                <li
+                  class="form-row"
+                >
+                  <label
+                    for="taskSchedule"
+                  >
+                    First Available Time Slot
+                  </label>
+                   
+                  <div>
+                    <div>
+                      <p>
+                        Requires resource and estimate input
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+           
+          <div
+            class="bottom-on-desktop"
+          >
+            <button
+              class="add-task-btn"
+              type="submit"
+            >
+              Add Task
+            </button>
+             
+            <p
+              class="cancel-btn"
+            >
+              Cancel
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+   
+  <div
+    class="modal-task-detail"
+  >
+    <div
+      class="backdrop"
+      style="display: none;"
+    />
+     
+    <div
+      class="modal modal--hide"
+    >
+      <div
+        class="task-detail"
+      >
+        <div
+          class="task-detail__top-bar"
+          style="background-color: rgb(29, 164, 193);"
+        >
+          <div>
+            
+          </div>
+           
+          <div
+            class="task-detail__top-bar__close-btn"
+          >
+            x
+          </div>
+        </div>
+         
+        <div
+          class="task-detail__task-content"
+        >
+          <p
+            class="task-detail__task-content__task-title"
+          >
+            
+      
+      
+            <span
+              class="task-detail__task-content--impact"
+            >
+              
+            </span>
+          </p>
+           
+          <dl>
+            <dt>
+              Project
+            </dt>
+             
+            <dd>
+              
+            </dd>
+             
+            <dt>
+              Error
+            </dt>
+             
+            <dd>
+              
+            </dd>
+             
+            <dt>
+              Scheduled for
+            </dt>
+             
+            <dd>
+               - 
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <header>
+    <h1>
+      Company X
+    </h1>
+  </header>
+   
+  <div
+    class="scrolling-wrapper"
+  >
+    <div
+      class="wrapper"
+    >
+      <div
+        class="row-headers"
+      >
+        <div
+          class="empty"
+        />
+         
+        <div
+          class="weekly-grid"
+        >
+          <div
+            class="day-date weekday monday"
+          >
+            <div
+              class="day"
+            >
+              <p>
+                Monday 8th July
+              </p>
+            </div>
+             
+            <div
+              class="hours"
+            >
+              <div
+                class="hour"
+              >
+                9
+              </div>
+               
+              <div
+                class="hour"
+              >
+                10
+              </div>
+               
+              <div
+                class="hour"
+              >
+                11
+              </div>
+               
+              <div
+                class="hour"
+              >
+                12
+              </div>
+               
+              <div
+                class="hour"
+              >
+                13
+              </div>
+               
+              <div
+                class="hour"
+              >
+                14
+              </div>
+               
+              <div
+                class="hour"
+              >
+                15
+              </div>
+               
+              <div
+                class="hour"
+              >
+                16
+              </div>
+               
+              <div
+                class="hour"
+              >
+                17
+              </div>
+            </div>
+          </div>
+          <div
+            class="day-date weekday tuesday"
+          >
+            <div
+              class="day"
+            >
+              <p>
+                Tuesday 9th July
+              </p>
+            </div>
+             
+            <div
+              class="hours"
+            >
+              <div
+                class="hour"
+              >
+                9
+              </div>
+               
+              <div
+                class="hour"
+              >
+                10
+              </div>
+               
+              <div
+                class="hour"
+              >
+                11
+              </div>
+               
+              <div
+                class="hour"
+              >
+                12
+              </div>
+               
+              <div
+                class="hour"
+              >
+                13
+              </div>
+               
+              <div
+                class="hour"
+              >
+                14
+              </div>
+               
+              <div
+                class="hour"
+              >
+                15
+              </div>
+               
+              <div
+                class="hour"
+              >
+                16
+              </div>
+               
+              <div
+                class="hour"
+              >
+                17
+              </div>
+            </div>
+          </div>
+          <div
+            class="day-date weekday wednesday"
+          >
+            <div
+              class="day"
+            >
+              <p>
+                Wednesday 10th July
+              </p>
+            </div>
+             
+            <div
+              class="hours"
+            >
+              <div
+                class="hour"
+              >
+                9
+              </div>
+               
+              <div
+                class="hour"
+              >
+                10
+              </div>
+               
+              <div
+                class="hour"
+              >
+                11
+              </div>
+               
+              <div
+                class="hour"
+              >
+                12
+              </div>
+               
+              <div
+                class="hour"
+              >
+                13
+              </div>
+               
+              <div
+                class="hour"
+              >
+                14
+              </div>
+               
+              <div
+                class="hour"
+              >
+                15
+              </div>
+               
+              <div
+                class="hour"
+              >
+                16
+              </div>
+               
+              <div
+                class="hour"
+              >
+                17
+              </div>
+            </div>
+          </div>
+          <div
+            class="day-date weekday thursday"
+          >
+            <div
+              class="day"
+            >
+              <p>
+                Thursday 11th July
+              </p>
+            </div>
+             
+            <div
+              class="hours"
+            >
+              <div
+                class="hour"
+              >
+                9
+              </div>
+               
+              <div
+                class="hour"
+              >
+                10
+              </div>
+               
+              <div
+                class="hour"
+              >
+                11
+              </div>
+               
+              <div
+                class="hour"
+              >
+                12
+              </div>
+               
+              <div
+                class="hour"
+              >
+                13
+              </div>
+               
+              <div
+                class="hour"
+              >
+                14
+              </div>
+               
+              <div
+                class="hour"
+              >
+                15
+              </div>
+               
+              <div
+                class="hour"
+              >
+                16
+              </div>
+               
+              <div
+                class="hour"
+              >
+                17
+              </div>
+            </div>
+          </div>
+          <div
+            class="day-date weekday friday"
+          >
+            <div
+              class="day"
+            >
+              <p>
+                Friday 12th July
+              </p>
+            </div>
+             
+            <div
+              class="hours"
+            >
+              <div
+                class="hour"
+              >
+                9
+              </div>
+               
+              <div
+                class="hour"
+              >
+                10
+              </div>
+               
+              <div
+                class="hour"
+              >
+                11
+              </div>
+               
+              <div
+                class="hour"
+              >
+                12
+              </div>
+               
+              <div
+                class="hour"
+              >
+                13
+              </div>
+               
+              <div
+                class="hour"
+              >
+                14
+              </div>
+               
+              <div
+                class="hour"
+              >
+                15
+              </div>
+               
+              <div
+                class="hour"
+              >
+                16
+              </div>
+               
+              <div
+                class="hour"
+              >
+                17
+              </div>
+            </div>
+          </div>
+           
+        </div>
+      </div>
+       
+      <div
+        class="resources"
+      />
+    </div>
+  </div>
+   
+  <footer>
+    <div
+      class="add-button-wrapper"
+    >
+      <img
+        src="../../../assets/addButton.svg"
+      />
+    </div>
+  </footer>
+</div>
+`;
