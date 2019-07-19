@@ -4,6 +4,7 @@ export const PROJECT_LIST = 'tasks/PROJECT_LIST';
 export const RESOURCE_LIST = 'tasks/RESOURCE_LIST';
 export const SHOW_TASK_DETAILS = 'tasks/SHOW_TASK_DETAILS';
 export const SHOW_TASK_NEW = 'tasks/SHOW_TASK_NEW';
+export const SELECTED_TASK = 'tasks/SELECTED_TASK';
 
 export const MUTATE_UPDATE_TASKS = 'tasks/MUTATE_UPDATE_TASKS';
 export const MUTATE_UPDATE_CLIENT_TASKS = 'tasks/MUTATE_UPDATE_CLIENT_TASKS';

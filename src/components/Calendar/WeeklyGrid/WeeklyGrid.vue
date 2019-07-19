@@ -10,7 +10,7 @@
       v-for="task in tasks"
       :key="task.taskId"
       class="task"
-      @click.native="emitTaskDetails(task)"
+      @click.native="showTaskDetails(task)"
       :style="generateTaskClasses(task)"
     >
       <p class="clientName" v-if="task.taskEstimate > 3">{{ task.clientName }}</p>
@@ -27,6 +27,8 @@ import Task from "../../Task/Task.vue";
 import { EventBus } from "../../../event-bus.js";
 import { store } from "../../../utils/store.js";
 import axios from "axios";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from '../../../store/types'
 
 export default {
   props: {
@@ -45,6 +47,9 @@ export default {
     weeklyGridTask: Task
   },
   methods: {
+    ...mapMutations({ 
+      showTaskDetails: types.MUTATE_SHOW_TASK_DETAILS
+    }),
     getCurrentDate: function() {
       return new Date();
     },
@@ -116,12 +121,6 @@ export default {
       console.log("Call to addMargin took " + (t1 - t0) + " milliseconds.");
         return "marginRight: 5px";
       }
-    },
-    emitTaskDetails: function(task) {
-      var t0 = performance.now();
-      EventBus.$emit("showTaskDetails", task);
-      var t1 = performance.now();
-      console.log("Call to emitTaskDetails took " + (t1 - t0) + " milliseconds.");
     },
     generateTaskClasses(task) {
       var t0 = performance.now();

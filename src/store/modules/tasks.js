@@ -9,7 +9,21 @@ const state = {
   projectList: [],
   resourceList: [],
   isTaskOptionsLoading: false,
-  showTaskNew: false
+  showTaskNew: false,
+  showTaskDetails: false,
+  selectedTask: {
+    taskId: "0",
+    taskTitle: "No task was selected, please exit the screen and click a task",
+    taskAffectedArea: "n/a",
+    taskErroneousBehaviour: "n/a",
+    taskExpectedBehaviour: "n/a",
+    taskImpact: "n/a",
+    taskStartTime: "n/a",
+    taskEndTime: "n/a",
+    taskEstimate: "n/a",
+    projectTitle: "n/a",
+    clientName: "n/a"
+  }
 };
 
 const getters = {
@@ -17,6 +31,8 @@ const getters = {
   [types.PROJECT_LIST]: state => state.projectList,
   [types.RESOURCE_LIST]: state => state.resourceList,
   [types.SHOW_TASK_NEW]: state => state.showTaskNew,
+  [types.SHOW_TASK_DETAILS]: state => state.showTaskDetails,
+  [types.SELECTED_TASK]: state => state.selectedTask
 };
 
 const mutations = {
@@ -27,16 +43,39 @@ const mutations = {
     state.isTasksLoading = loading;
   },
   [types.MUTATE_TASK_OPTIONS]: (state, taskOptions) => {
-      const updatedProjectList = actions.handleTaskPresets(taskOptions.clientProjects);
-      state.projectList = updatedProjectList;
-      state.resourceList = taskOptions.resources;
+    const updatedProjectList = actions.handleTaskPresets(
+      taskOptions.clientProjects
+    );
+    state.projectList = updatedProjectList;
+    state.resourceList = taskOptions.resources;
   },
   [types.MUTATE_TASK_OPTIONS_LOADING]: (state, loading) => {
-      state.isTaskOptionsLoading = loading
+    state.isTaskOptionsLoading = loading;
   },
-  [types.MUTATE_SHOW_TASK_NEW]: (state) => {
-      console.log("I AM CLICKED: ", state.showTaskNew)
-      state.showTaskNew = !state.showTaskNew
+  [types.MUTATE_SHOW_TASK_NEW]: state => {
+    state.showTaskNew = !state.showTaskNew;
+  },
+  [types.MUTATE_SHOW_TASK_DETAILS]: (state, task) => {
+    if (!state.showTaskDetails) {
+      state.showTaskDetails = !state.showTaskDetails;
+      state.selectedTask = task;
+    } else {
+      state.showTaskDetails = !state.showTaskDetails;
+      state.selectedTask = {
+        taskId: "0",
+        taskTitle:
+          "No task was selected, please exit the screen and click a task",
+        taskAffectedArea: "n/a",
+        taskErroneousBehaviour: "n/a",
+        taskExpectedBehaviour: "n/a",
+        taskImpact: "n/a",
+        taskStartTime: "n/a",
+        taskEndTime: "n/a",
+        taskEstimate: "n/a",
+        projectTitle: "n/a",
+        clientName: "n/a"
+      };
+    }
   }
 };
 
@@ -47,13 +86,13 @@ const actions = {
     commit(types.MUTATE_TASK_LOADING, true);
     commit(types.MUTATE_UPDATE_TASKS, data);
   },
-  async fetchTaskOptions({ commit }){
-      commit(types.MUTATE_TASK_OPTIONS_LOADING, true);
-      const { data } = await TaskRepository.getTaskFormPresets();
-      commit(types.MUTATE_TASK_OPTIONS_LOADING, false);
-      commit(types.MUTATE_TASK_OPTIONS, data);
+  async fetchTaskOptions({ commit }) {
+    commit(types.MUTATE_TASK_OPTIONS_LOADING, true);
+    const { data } = await TaskRepository.getTaskFormPresets();
+    commit(types.MUTATE_TASK_OPTIONS_LOADING, false);
+    commit(types.MUTATE_TASK_OPTIONS, data);
   },
-  handleTaskPresets: (projectsList) => {
+  handleTaskPresets: projectsList => {
     var t0 = performance.now();
     let projectsArray = projectsList.reduce(function(
       formPresetsArray,
@@ -76,7 +115,6 @@ const actions = {
     );
     return projectsArray;
   }
-
 };
 
 export default {

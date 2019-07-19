@@ -9,11 +9,11 @@
     </layout-modal>
     <layout-modal
       :if="isTaskDetailShowing"
-      @closeModal="handleTaskDetailModalClose"
+      @closeModal="handleTaskDetailModal"
       :showModal="isTaskDetailShowing"
       class="modal-task-detail"
     >
-      <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
+      <layout-task-detail :task="selectedTask" @closeModal="handleTaskDetailModal"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
     <layout-calendar></layout-calendar>
@@ -28,8 +28,6 @@ import Footer from "../components/Footer/Footer.vue";
 import Modal from "../components/UI/Modal/Modal.vue";
 import TaskNew from "../containers/TaskNew";
 import TaskDetail from "../components/Task/TaskDetail/TaskDetail.vue";
-import { EventBus } from "../event-bus.js";
-import { store } from "../utils/store.js";
 import axios from "axios";
 import { RepositoryFactory } from "../utils/RepositoryFactory";
 import { mapGetters, mapMutations, mapActions } from "vuex";
@@ -42,11 +40,6 @@ export default {
   data: function() {
     return {
       store,
-      isResourceTasksLoading: store.state.isResourceTasksLoading,
-      isTaskFormPresetsLoading: store.state.isTaskFormPresetsLoading,
-      projectsList: store.state.projectsList,
-      resourceList: store.state.resourceList,
-      taskDetail: {},
       resourceSchedule: {},
       firstAvailableStartTime: "",
       firstAvailableEndTime: ""
@@ -54,16 +47,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAddTaskFormShowing: types.SHOW_TASK_NEW
-    }),
-    isTaskDetailShowing: function() {
-      return store.state.modalControls.isTaskDetailShowing;
-    }
+      isAddTaskFormShowing: types.SHOW_TASK_NEW,
+      isTaskDetailShowing: types.SHOW_TASK_DETAILS,
+      selectedTask: types.SELECTED_TASK
+    })
   },
   created() {
-    EventBus.$on("showTaskDetails", this.handleTaskDetailsModalOpen);
-    store.fetchResourceTasks();
-    this.fetchTaskFormPresets();
   },
   components: {
     layoutHeader: Header,
@@ -75,18 +64,9 @@ export default {
   },
   methods: {
     ...mapMutations({ 
-      handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW
+      handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW,
+      handleTaskDetailModal: types.MUTATE_SHOW_TASK_DETAILS
     }),
-    async fetchTaskFormPresets() {
-      var t0 = performance.now();
-      this.isTaskFormPresetsLoading = true;
-      const { data } = await TaskRepository.getTaskFormPresets();
-      console.log(data);
-      this.isTaskFormPresetsLoading = false;
-      this.projectsList = data["clientProjects"];
-      this.resourceList = data["resources"];
-      this.handleTaskPresets();
-    },
     async fetchResourceSchedule(resourceAndEstimate) {
       var t0 = performance.now();
       this.isResourceScheduleLoading = true;
@@ -99,44 +79,6 @@ export default {
       var t1 = performance.now();
       console.log(
         "Call to fetchTaskFormPresets took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    
-    handleTaskAddModalClose: function() {
-      var t0 = performance.now();
-      store.hideAddTaskForm();
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskAddModalClose took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    handleTaskAddModalOpen: function() {
-      var t0 = performance.now();
-      this.showTaskAdd = true;
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskAddModalOpen took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    handleTaskDetailsModalOpen: function(task) {
-      var t0 = performance.now();
-      store.state.modalControls.isTaskDetailShowing = true;
-      this.taskDetail = task;
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskDetailsModalOpen took " +
-          (t1 - t0) +
-          " milliseconds."
-      );
-    },
-    handleTaskDetailModalClose: function() {
-      var t0 = performance.now();
-      store.hideTaskDetail();
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskDetailModalClose took " +
-          (t1 - t0) +
-          " milliseconds."
       );
     },
     handleFormSubmission: function(task) {
