@@ -23,7 +23,8 @@ const state = {
     taskEstimate: "n/a",
     projectTitle: "n/a",
     clientName: "n/a"
-  }
+  },
+  unscheduledTasks: []
 };
 
 const getters = {
@@ -32,7 +33,8 @@ const getters = {
   [types.RESOURCE_LIST]: state => state.resourceList,
   [types.SHOW_TASK_NEW]: state => state.showTaskNew,
   [types.SHOW_TASK_DETAILS]: state => state.showTaskDetails,
-  [types.SELECTED_TASK]: state => state.selectedTask
+  [types.SELECTED_TASK]: state => state.selectedTask,
+  [types.UNSCHEDULED_TASKS]: state => state.unscheduledTasks
 };
 
 const mutations = {
@@ -76,6 +78,9 @@ const mutations = {
         clientName: "n/a"
       };
     }
+  },
+  [types.MUTATE_UNSCHEDULED_TASKS]: (state, tasks) => {
+      state.unscheduledTasks = tasks
   }
 };
 
@@ -114,6 +119,10 @@ const actions = {
       "Call to handleTaskPresets took " + (t1 - t0) + " milliseconds."
     );
     return projectsArray;
+  },
+  async fetchUnscheduledTasks ({ commit }) {
+      const { data } = await TaskRepository.getUnscheduledTasks();
+      commit(types.MUTATE_UNSCHEDULED_TASKS(data));
   }
 };
 

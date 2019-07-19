@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Logo from "../Logo/Logo.vue";
+import Logo from "../components/Logo/Logo";
 
 export default {
   components: {

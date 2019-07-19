@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Header from "../components/Header/Header.vue";
+import Header from "../containers/Header";
 import Calendar from "../components/Calendar/Calendar.vue";
 import Footer from "../components/Footer/Footer.vue";
 import Modal from "../components/UI/Modal/Modal.vue";

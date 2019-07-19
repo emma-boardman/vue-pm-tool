@@ -92,10 +92,6 @@ export default {
         taskImpact: "low",
         taskTimeNoticed: "",
         taskRecentChanges: "",
-        taskResource: "",
-        taskEstimate: "",
-        taskStartTime: "",
-        taskEndTime: ""
       },
       impactOptions: ["Low", "Medium", "High"]
     };
