@@ -1,19 +1,31 @@
 import App from './App.vue';
-import TaskDetail from './components/Task/TaskDetail/TaskDetail.vue';
+import Layout from './containers/Layout';
+import UnscheduledTasks from './containers/UnscheduledTasks';
 
 export const routes = [
 {
-	path: '/',
+	path: '',
 	name: 'home',
 	component: App
 },
-{	path: '/task',
-	name: 'home',
-	component: App,
-	children: [
-	 { path: ':id',
-	 name: 'taskDetail',
-	 component: TaskDetail 
-		}
-	]
-}];
+{	path: '/pm',
+	name: 'pm',
+	component: Layout,
+	props: { user: 'pm', view: 'calendar'}
+},
+{	path: '/client',
+	name: 'client',
+	component: Layout,
+	props: { user: 'client', view: 'calendar'}
+},
+{	path: 'pm/unscheduledtasks',
+	name: 'pm-unscheduledtasks',
+	component: Layout,
+	props: { user: 'pm', view: 'ust' }
+},
+{	path: 'client/unscheduledtasks',
+	name: 'client-unscheduledtasks',
+	component: Layout,
+	props: { user: 'client', view: 'ust'}
+}
+];

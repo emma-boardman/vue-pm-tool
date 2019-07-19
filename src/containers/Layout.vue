@@ -16,7 +16,12 @@
       <layout-task-detail :task="selectedTask" @closeModal="handleTaskDetailModal"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
-    <layout-calendar></layout-calendar>
+    <div v-if="isUnscheduledTaskView">
+    <layout-unscheduled-tasks/>
+    </div>
+    <div v-else>
+    <layout-calendar />
+    </div>
     <layout-footer></layout-footer>
   </div>
 </template>
@@ -28,10 +33,11 @@ import Footer from "../components/Footer/Footer.vue";
 import Modal from "../components/UI/Modal/Modal.vue";
 import TaskNew from "../containers/TaskNew";
 import TaskDetail from "../components/Task/TaskDetail/TaskDetail.vue";
+import UnscheduledTasks from "../containers/UnscheduledTasks.vue"
 import axios from "axios";
 import { RepositoryFactory } from "../utils/RepositoryFactory";
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import * as types from '../store/types'
+import * as types from "../store/types";
 
 const ResourceRepository = RepositoryFactory.get("resources");
 const TaskRepository = RepositoryFactory.get("tasks");
@@ -50,20 +56,27 @@ export default {
       isAddTaskFormShowing: types.SHOW_TASK_NEW,
       isTaskDetailShowing: types.SHOW_TASK_DETAILS,
       selectedTask: types.SELECTED_TASK
-    })
+    }),
+    isUnscheduledTaskView: function() {
+      if (this.$route.path.includes("unscheduledtasks")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
-  created() {
-  },
+  created() {},
   components: {
     layoutHeader: Header,
     layoutCalendar: Calendar,
     layoutFooter: Footer,
     layoutModal: Modal,
     layoutTaskNew: TaskNew,
-    layoutTaskDetail: TaskDetail
+    layoutTaskDetail: TaskDetail,
+    layoutUnscheduledTasks: UnscheduledTasks
   },
   methods: {
-    ...mapMutations({ 
+    ...mapMutations({
       handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW,
       handleTaskDetailModal: types.MUTATE_SHOW_TASK_DETAILS
     }),

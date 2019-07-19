@@ -80,7 +80,9 @@ const mutations = {
     }
   },
   [types.MUTATE_UNSCHEDULED_TASKS]: (state, tasks) => {
+      console.log("mutate runs with tasK: ", tasks)
       state.unscheduledTasks = tasks
+      console.log("mutate over: ", state.unscheduledTasks)
   }
 };
 
@@ -121,8 +123,10 @@ const actions = {
     return projectsArray;
   },
   async fetchUnscheduledTasks ({ commit }) {
+      console.log("fetch ust running");
       const { data } = await TaskRepository.getUnscheduledTasks();
-      commit(types.MUTATE_UNSCHEDULED_TASKS(data));
+      console.log("fetch ust response", data);
+      commit(types.MUTATE_UNSCHEDULED_TASKS, data.data);
   }
 };
 

@@ -6,6 +6,7 @@ export default{
         return Repository.get(`/readAddTaskOptions.php`); 
     },
     getUnscheduledTasks() {
-        return resourceRepository.get(`readUnscheduledTasks.php`);
+        console.log("get ust running");
+        return Repository.get(`readUnscheduledTasks.php`);
     }
 };

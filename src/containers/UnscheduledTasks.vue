@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <unscheduled-tasks-ust-list />
+  <div class="unscheduled-tasks">
+    <div v-if="unscheduledTasks.length >= 1">
+    <UnscheduledTasksUSTList :unscheduledTasks="unscheduledTasks" />
+    </div>
+    <div v-else>
+      <p>"No Unscheduled Tasks"</p>
+    </div>
   </div>
 </template>
 
@@ -30,3 +35,11 @@ export default {
 };
 </script>
 
+<style>
+
+.unscheduled-tasks {
+  margin-top: 10vh;
+  text-align: center;
+}
+
+</style>

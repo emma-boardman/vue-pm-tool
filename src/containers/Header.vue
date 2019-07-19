@@ -1,15 +1,28 @@
 <template>
   <header>
-    <header-logo></header-logo>
+    <router-link to="/pm">
+      <header-logo></header-logo>
+    </router-link>
+    
+    <router-link to="/pm/unscheduledtasks">
+      <header-notification />
+    </router-link>
   </header>
 </template>
 
 <script>
 import Logo from "../components/Logo/Logo";
+import Notification from "../components/Notification/Notification";
 
 export default {
   components: {
-    HeaderLogo: Logo
+    HeaderLogo: Logo,
+    HeaderNotification: Notification
+  },
+  computed: {
+    ustLink: function() {
+      return this.$route.path + "/unscheduledtasks";
+    }
   }
 };
 </script>
@@ -23,10 +36,17 @@ header {
   left: 0;
   width: 100%;
   height: 8vh;
+  display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+}
 header h1 {
-  margin-top: 2.7%;
+  margin-top: 9%;
 }
 
 @media (min-width: 576px) {
