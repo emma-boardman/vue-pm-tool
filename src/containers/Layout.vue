@@ -45,8 +45,6 @@ const TaskRepository = RepositoryFactory.get("tasks");
 export default {
   data: function() {
     return {
-      store,
-      resourceSchedule: {},
       firstAvailableStartTime: "",
       firstAvailableEndTime: ""
     };
@@ -80,20 +78,6 @@ export default {
       handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW,
       handleTaskDetailModal: types.MUTATE_SHOW_TASK_DETAILS
     }),
-    async fetchResourceSchedule(resourceAndEstimate) {
-      var t0 = performance.now();
-      this.isResourceScheduleLoading = true;
-      const { data } = await ResourceRepository.getResourceSchedule(
-        resourceAndEstimate.resourceId
-      );
-      this.isResourceScheduleLoading = false;
-      this.resourceSchedule = data;
-      this.handleResourceAvailability(resourceAndEstimate);
-      var t1 = performance.now();
-      console.log(
-        "Call to fetchTaskFormPresets took " + (t1 - t0) + " milliseconds."
-      );
-    },
     handleFormSubmission: function(task) {
       var t0 = performance.now();
       console.log(task);
@@ -106,100 +90,7 @@ export default {
       // this.firstAvailableStartTime ='';
       // this.firstAvailableEndTime ='';
     },
-    handleResourceAvailability: function(resourceAndEstimate) {
-      var t0 = performance.now();
-      const weeklyAvailability = Array(45).fill(true);
-      const weeklyTimeSlots = [
-        "Mon0900",
-        "Mon1000",
-        "Mon1100",
-        "Mon1200",
-        "Mon1300",
-        "Mon1400",
-        "Mon1500",
-        "Mon1600",
-        "Mon1700",
-        "Tues0900",
-        "Tues1000",
-        "Tues1100",
-        "Tues1200",
-        "Tues1300",
-        "Tues1400",
-        "Tues1500",
-        "Tues1600",
-        "Tues1700",
-        "Wed0900",
-        "Wed1000",
-        "Wed1100",
-        "Wed1200",
-        "Wed1300",
-        "Wed1400",
-        "Wed1500",
-        "Wed1600",
-        "Wed1700",
-        "Thurs0900",
-        "Thurs1000",
-        "Thurs1100",
-        "Thurs1200",
-        "Thurs1300",
-        "Thurs1400",
-        "Thurs1500",
-        "Thurs1600",
-        "Thurs1700",
-        "Fri0900",
-        "Fri1000",
-        "Fri1100",
-        "Fri1200",
-        "Fri1300",
-        "Fri1400",
-        "Fri1500",
-        "Fri1600",
-        "Fri1700"
-      ];
-      if (this.resourceSchedule.length > 0) {
-        for (let n = 0; n < this.resourceSchedule.length; n++) {
-          const startTime = this.resourceSchedule[n].taskStartTime;
-          const estimatedTime = this.resourceSchedule[n].taskEstimate;
-          for (let i = 0; i < weeklyTimeSlots.length; i++) {
-            if (weeklyTimeSlots[i] == startTime) {
-              for (let j = 0; j < estimatedTime; j++) {
-                weeklyAvailability[i + j] = false;
-              }
-            }
-          }
-        }
-      }
-      console.log(weeklyAvailability);
-      const estimateArray = Array(resourceAndEstimate.taskEstimate).fill(true);
-      let indexOfFirstAvailability = this.findAvailability(
-        weeklyAvailability,
-        estimateArray
-      );
-      this.firstAvailableStartTime = weeklyTimeSlots[indexOfFirstAvailability];
-      const endTime =
-        parseInt(indexOfFirstAvailability) +
-        parseInt(resourceAndEstimate.taskEstimate);
-      this.firstAvailableEndTime = weeklyTimeSlots[endTime];
-      var t1 = performance.now();
-      console.log(
-        "Call to handleResourceAvailability took " +
-          (t1 - t0) +
-          " milliseconds."
-      );
-    },
-    findAvailability(arr, subarr) {
-      var t0 = performance.now();
-      for (var i = 0; i < 1 + (arr.length - subarr.length); i++) {
-        var j = 0;
-        for (; j < subarr.length; j++) if (arr[i + j] !== subarr[j]) break;
-        if (j == subarr.length) return i;
-      }
-      var t1 = performance.now();
-      console.log(
-        "Call to findAvailability took " + (t1 - t0) + " milliseconds."
-      );
-      return -1;
-    }
+
   }
 };
 </script>

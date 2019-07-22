@@ -3,9 +3,20 @@
     <router-link to="/pm">
       <header-logo></header-logo>
     </router-link>
-    
-    <router-link to="/pm/unscheduledtasks">
-      <header-notification />
+
+    <router-link :to="ustLink">
+      <div v-if="isPM">
+        <header-notification v-if="unscheduledTasks.length >= 1" user="pm" unscheduledtasks="true" />
+        <header-notification v-else user="pm" :unscheduledtasks=false />
+      </div>
+      <div v-else>
+        <header-notification
+          v-if="unscheduledTasks.length >= 1"
+          user="client"
+          unscheduledtasks="true"
+        />
+        <header-notification v-else user="client" unscheduledtasks="false" />
+      </div>
     </router-link>
   </header>
 </template>
@@ -13,16 +24,34 @@
 <script>
 import Logo from "../components/Logo/Logo";
 import Notification from "../components/Notification/Notification";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from "../store/types";
 
 export default {
+  computed: {
+    ...mapGetters({
+      unscheduledTasks: types.UNSCHEDULED_TASKS
+    }),
+    ustLink: function() {
+      return this.$route.path + "/unscheduledtasks";
+    },
+    isPM: function() {
+      if (this.$route.path === "/pm") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  created() {
+    fetchUnscheduledTasks: this.$store.dispatch("fetchUnscheduledTasks");
+  },
+  methods: {
+    ...mapActions(["fetchUnscheduledTasks"])
+  },
   components: {
     HeaderLogo: Logo,
     HeaderNotification: Notification
-  },
-  computed: {
-    ustLink: function() {
-      return this.$route.path + "/unscheduledtasks";
-    }
   }
 };
 </script>
@@ -37,9 +66,9 @@ header {
   width: 100%;
   height: 8vh;
   display: flex;
-	justify-content: space-between;
-	align-items: center;
-	box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 a {

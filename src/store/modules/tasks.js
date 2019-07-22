@@ -24,7 +24,21 @@ const state = {
     projectTitle: "n/a",
     clientName: "n/a"
   },
-  unscheduledTasks: []
+  unscheduledTasks: [],
+  showSchedulingComponent: false,
+  taskToBeScheduled: {
+    taskId: "0",
+    taskTitle: "No task was selected, please exit the screen and click a task",
+    taskAffectedArea: "n/a",
+    taskErroneousBehaviour: "n/a",
+    taskExpectedBehaviour: "n/a",
+    taskImpact: "n/a",
+    taskStartTime: "n/a",
+    taskEndTime: "n/a",
+    taskEstimate: "n/a",
+    projectTitle: "n/a",
+    clientName: "n/a"
+  }
 };
 
 const getters = {
@@ -34,7 +48,9 @@ const getters = {
   [types.SHOW_TASK_NEW]: state => state.showTaskNew,
   [types.SHOW_TASK_DETAILS]: state => state.showTaskDetails,
   [types.SELECTED_TASK]: state => state.selectedTask,
-  [types.UNSCHEDULED_TASKS]: state => state.unscheduledTasks
+  [types.UNSCHEDULED_TASKS]: state => state.unscheduledTasks,
+  [types.SHOW_SCHEDULING_COMPONENT]: state => state.showSchedulingComponent,
+  [types.TASK_TO_BE_SCHEDULED]: state => state.taskToBeScheduled
 };
 
 const mutations = {
@@ -80,9 +96,29 @@ const mutations = {
     }
   },
   [types.MUTATE_UNSCHEDULED_TASKS]: (state, tasks) => {
-      console.log("mutate runs with tasK: ", tasks)
-      state.unscheduledTasks = tasks
-      console.log("mutate over: ", state.unscheduledTasks)
+    state.unscheduledTasks = tasks;
+  },
+  [types.MUTATE_SHOW_SCHEDULING_COMPONENT]: (state, taskToBeScheduled) => {
+    if (!state.showSchedulingComponent) {
+      state.showSchedulingComponent = !state.showSchedulingComponent;
+      state.taskToBeScheduled = taskToBeScheduled;
+    } else {
+      state.showSchedulingComponent = !state.showSchedulingComponent;
+      state.taskToBeScheduled = {
+        taskId: "0",
+        taskTitle:
+          "No task was selected, please exit the screen and click a task",
+        taskAffectedArea: "n/a",
+        taskErroneousBehaviour: "n/a",
+        taskExpectedBehaviour: "n/a",
+        taskImpact: "n/a",
+        taskStartTime: "n/a",
+        taskEndTime: "n/a",
+        taskEstimate: "n/a",
+        projectTitle: "n/a",
+        clientName: "n/a"
+      };
+    }
   }
 };
 
@@ -122,11 +158,11 @@ const actions = {
     );
     return projectsArray;
   },
-  async fetchUnscheduledTasks ({ commit }) {
-      console.log("fetch ust running");
-      const { data } = await TaskRepository.getUnscheduledTasks();
-      console.log("fetch ust response", data);
-      commit(types.MUTATE_UNSCHEDULED_TASKS, data.data);
+  async fetchUnscheduledTasks({ commit }) {
+    console.log("fetch ust running");
+    const { data } = await TaskRepository.getUnscheduledTasks();
+    console.log("fetch ust response", data);
+    commit(types.MUTATE_UNSCHEDULED_TASKS, data.data);
   }
 };
 

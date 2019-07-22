@@ -1,17 +1,27 @@
 <template>
   <div class="resources">
+    <div v-if="isPM">
     <resources-resource-row
       v-for="resource in resourceTasks"
       :key="resource.resourceId"
       :resourceObj="resource"
     ></resources-resource-row>
+    </div>
+    <div v-else>
+       <resources-resource-row
+      v-for="resource in clientResourceTasks"
+      :key="resource.resourceId"
+      :resourceObj="resource"
+    ></resources-resource-row>
+    </div>
+
   </div>
 </template>
 
 <script>
 import Resource from "../components/Resource/Resource.vue";
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import * as types from '../store/types'
+import * as types from "../store/types";
 
 export default {
   data: function() {
@@ -23,21 +33,32 @@ export default {
       clientResourceTasks: types.CLIENT_TASKS,
       projectList: types.PROJECT_LIST,
       resourceList: types.RESOURCE_LIST
-    })
+    }),
+    isPM: function() {
+      if (this.$route.path === "/pm") {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   created() {
     fetchResourceTasks: {
-      this.$store.dispatch('fetchResourceTasks')
-    }
+      this.$store.dispatch("fetchResourceTasks");
+    } 
     fetchClientResourceTasks: {
-      this.$store.dispatch('fetchClientResourceTasks')
+      this.$store.dispatch("fetchClientResourceTasks");
     }
     fetchTaskOptions: {
-      this.$store.dispatch('fetchTaskOptions')
+      this.$store.dispatch("fetchTaskOptions");
     }
   },
   methods: {
-    ...mapActions(['fetchResourceTasks', 'fetchClientResourceTasks', 'fetchTaskOptions']),
+    ...mapActions([
+      "fetchResourceTasks",
+      "fetchClientResourceTasks",
+      "fetchTaskOptions"
+    ])
   },
   components: {
     ResourcesResourceRow: Resource

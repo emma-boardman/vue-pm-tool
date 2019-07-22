@@ -1,6 +1,5 @@
 import App from './App.vue';
 import Layout from './containers/Layout';
-import UnscheduledTasks from './containers/UnscheduledTasks';
 
 export const routes = [
 {
