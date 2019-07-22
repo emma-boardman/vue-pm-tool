@@ -1,10 +1,54 @@
 <template>
-  <div>
+  <div :style="[taskInformation.style, generateTaskClasses(taskInformation)]">
     <slot></slot>
   </div>
 </template>
 
+
+
 <script>
+export default {
+  props: {
+    taskInformation: Object,
+    style: Object
+  },
+  data() {
+    return {
+    };
+  },
+  methods: {
+generateTaskClasses: function(task) {
+		var t0 = performance.now();
+		let color;
+		switch (task.clientName) {
+		  case "Delos":
+			color = "#C6F400";
+			break;
+		  case "Shogun World":
+			color = "#F48A18";
+			break;
+		  case "Ford":
+			color = "#B087FF";
+			break;
+		  case "Logan":
+			color = "#1DA4C1";
+			break;
+		  default:
+			color = "#1DA4C1";
+			break;
+		}
+		let dynamicStyles = {
+		  backgroundColor: color,
+		};
+		var t1 = performance.now();
+		console.log(
+		  "Call to generateTaskClasses took " + (t1 - t0) + " milliseconds."
+		);
+		return dynamicStyles;
+    }
+    }
+  }
+    
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>"UST LIST"</p>
-    <unscheduled-task-list-task v-for="task in unscheduledTasks" :key="task.taskId">
+    <unscheduled-task-list-task v-for="task in unscheduledTasks" :key="task.taskId" :taskInformation="task">
       <p>{{task.taskTitle}}</p>
     </unscheduled-task-list-task>
   </div>
