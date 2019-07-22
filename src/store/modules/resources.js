@@ -18,11 +18,17 @@ const getters = {
 const mutations = {
   [types.MUTATE_RESOURCE_SCHEDULE]: (state, schedule) => {
     state.resourceSchedule = schedule;
+  },
+  [types.MUTATE_RESOURCE_AVAILABILITY]: (state, availability) => {
+    state.availability = {
+      startTime: availability.startTime,
+      endTime: availability.endTime
+    };
   }
 };
 
 const actions = {
-  handleResourceAvailability: function(resourceAndEstimate) {
+  handleResourceAvailability: function({ commit }, resourceAndEstimate) {
     var t0 = performance.now();
     const weeklyAvailability = Array(45).fill(true);
     const weeklyTimeSlots = [
@@ -91,11 +97,13 @@ const actions = {
       weeklyAvailability,
       estimateArray
     );
-    state.availability.startTime = weeklyTimeSlots[indexOfFirstAvailability];
     const endTime =
       parseInt(indexOfFirstAvailability) +
       parseInt(resourceAndEstimate.taskEstimate);
-    state.availability.endTime = weeklyTimeSlots[endTime];
+      commit(types.MUTATE_RESOURCE_AVAILABILITY, {
+        startTime: weeklyTimeSlots[indexOfFirstAvailability],
+        endTime: weeklyTimeSlots[endTime]
+      });
     var t1 = performance.now();
     console.log(
       "Call to handleResourceAvailability took " + (t1 - t0) + " milliseconds."
