@@ -3,10 +3,10 @@
     <p>{{task.taskTitle}}</p>
     <p>{{task.clientName}}</p>
 
-    <form>
+    <form @submit.prevent="handleScheduleSubmission(taskModel)">
       <ul class="form-wrapper">
         <li class="form-row">
-           <label for="resourceId">Resource</label>
+          <label for="resourceId">Resource</label>
           <select id="taskResource" v-model="taskModel.resourceId" required>
             <option
               v-for="resource in resourceList"
@@ -16,19 +16,31 @@
           </select>
         </li>
         <li class="form-row">
-      <label for="taskEstimate">Estimate (hours)</label>
-      <input
-        type="number"
-        id="taskEstimate"
-        required
-        v-model="taskModel.taskEstimate"
-        @blur="handleSchedulePlacement({
+          <label for="taskEstimate">Estimate (hours)</label>
+          <input
+            type="number"
+            id="taskEstimate"
+            required
+            v-model="taskModel.taskEstimate"
+            @blur="handleSchedulePlacement({
           resourceId: taskModel.resourceId,
           taskEstimate: taskModel.taskEstimate})"
-      />
-    </li>
-    
+          />
+        </li>
+        <li class="form-row">
+          <label for="taskSchedule">First Available Time Slot</label>
+          <div>
+            <div v-if="availability.endTime === ''">
+              <p>Requires resource and estimate input</p>
+            </div>
+            <div v-else class="timeslots">
+              <input readonly v-model="taskModel.startTime" :placeholder="availability.startTime" /> -
+              <input readonly v-model="taskModel.endTime" :placeholder="availability.endTime" />
+            </div>
+          </div>
+        </li>
       </ul>
+          <button type="submit" class="add-task-btn">Add Task</button>
     </form>
   </div>
 </template>
@@ -39,23 +51,25 @@ export default {
     resourceList: Array,
     projectList: Array,
     task: Object,
-    handleSchedulePlacement: Function
+    handleSchedulePlacement: Function,
+    availability: Object
   },
-   data() {
+  data() {
     return {
       taskModel: {
         resourceId: "",
-        taskEstimate: ""
+        taskEstimate: "",
+        startTime: "",
+        endTime: ""
       }
-    }
-   },
-  //  methods: {
-  //    handleSchedulePlacement: function(resourceAndEstimate) {
-  //      console.log("in method: ", resourceAndEstimate)
-  //    }
-  //  }
-}
-
+    };
+  },
+   methods: {
+     handleScheduleSubmission: function(taskModel) {
+       console.log("in method: ", taskModel)
+     }
+   }
+};
 </script>
 
 <style scoped>

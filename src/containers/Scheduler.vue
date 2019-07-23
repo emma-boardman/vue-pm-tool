@@ -5,6 +5,7 @@
       :projectList="projectList"
       :task="taskToBeScheduled"
       :handleSchedulePlacement="fetchResourceSchedule"
+      :availability="resourceAvailability"
     />
   </div>
 </template>

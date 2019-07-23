@@ -4,7 +4,8 @@
       <header-logo></header-logo>
     </router-link>
 
-    <router-link :to="ustLink">
+    <!-- <router-link :to="ustLink" exact> -->
+    <router-link :to="isPM ? '/pm-unscheduledtasks' : '/client-unscheduledtasks'" exact>
       <div v-if="isPM">
         <header-notification v-if="unscheduledTasks.length >= 1" user="pm" unscheduledtasks="true" />
         <header-notification v-else user="pm" :unscheduledtasks=false />

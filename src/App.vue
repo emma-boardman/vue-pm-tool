@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <app-layout></app-layout>
+    <router-view />
+    <!-- <app-layout></app-layout> -->
     <!-- <app-auth></app-auth> -->
   </div>
 </template>

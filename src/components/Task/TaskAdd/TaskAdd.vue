@@ -66,7 +66,8 @@
         </div>
       </div>
       <div class="bottom-on-desktop">
-        <button type="submit" class="add-task-btn">Add Task</button>
+        <add-task-button type="submit" class="add-task-btn">Add Task</add-task-button>
+        <!-- <button type="submit" class="add-task-btn">Add Task</button> -->
         <p class="cancel-btn" @click="closeForm">Cancel</p>
       </div>
     </form>
@@ -75,6 +76,7 @@
 
 <script>
 import { store } from "../../../utils/store.js";
+import Button from "../../UI/Button/Button";
 
 export default {
   props: {
@@ -95,6 +97,9 @@ export default {
       },
       impactOptions: ["Low", "Medium", "High"]
     };
+  },
+  components: {
+    AddTaskButton: Button
   },
   methods: {
     handleFormSubmission: async function(task) {

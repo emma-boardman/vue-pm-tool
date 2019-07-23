@@ -17,10 +17,10 @@
     </layout-modal>
     <layout-header></layout-header>
     <div v-if="isUnscheduledTaskView">
-    <layout-unscheduled-tasks/>
+      <layout-unscheduled-tasks :user="isPM ? 'pm' : 'client'"/>
     </div>
     <div v-else>
-    <layout-calendar />
+      <layout-calendar />
     </div>
     <layout-footer></layout-footer>
   </div>
@@ -33,7 +33,7 @@ import Footer from "../components/Footer/Footer.vue";
 import Modal from "../components/UI/Modal/Modal.vue";
 import TaskNew from "../containers/TaskNew";
 import TaskDetail from "../components/Task/TaskDetail/TaskDetail.vue";
-import UnscheduledTasks from "../containers/UnscheduledTasks.vue"
+import UnscheduledTasks from "../containers/UnscheduledTasks.vue";
 import axios from "axios";
 import { RepositoryFactory } from "../utils/RepositoryFactory";
 import { mapGetters, mapMutations, mapActions } from "vuex";
@@ -57,6 +57,13 @@ export default {
     }),
     isUnscheduledTaskView: function() {
       if (this.$route.path.includes("unscheduledtasks")) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isPM: function() {
+      if (this.$route.path.includes("pm")) {
         return true;
       } else {
         return false;
@@ -89,8 +96,7 @@ export default {
       );
       // this.firstAvailableStartTime ='';
       // this.firstAvailableEndTime ='';
-    },
-
+    }
   }
 };
 </script>
