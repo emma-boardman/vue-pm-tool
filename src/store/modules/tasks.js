@@ -2,6 +2,7 @@ import * as types from "../types";
 const ResourceRepository = RepositoryFactory.get("resources");
 const TaskRepository = RepositoryFactory.get("tasks");
 import { RepositoryFactory } from "../../utils/RepositoryFactory";
+import axios from 'axios'
 
 const state = {
   tasks: [],
@@ -163,6 +164,24 @@ const actions = {
     const { data } = await TaskRepository.getUnscheduledTasks();
     console.log("fetch ust response", data);
     commit(types.MUTATE_UNSCHEDULED_TASKS, data.data);
+  },
+  async postNewTask({commit}, task){
+    axios
+    .post("http://40414669.wdd.napier.ac.uk/inc/postNewTask.php", task)
+    .then(response => {
+      console.log(response);
+      commit(types.MUTATE_SHOW_TASK_NEW);
+      actions.fetchUnscheduledTasks({commit});
+    })
+    .catch(error => console.log(error));
+  },
+  async postNewSchedule({ commit }, schedule) {
+    axios
+      .post("http://40414669.wdd.napier.ac.uk/inc/postTaskSchedule.php", schedule)
+      .then(response => {
+        console.log(schedule, response);
+        commit(types.MUTATE_SHOW_SCHEDULING_COMPONENT);
+      });
   }
 };
 

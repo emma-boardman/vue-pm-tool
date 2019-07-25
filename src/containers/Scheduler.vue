@@ -6,6 +6,7 @@
       :task="taskToBeScheduled"
       :handleSchedulePlacement="fetchResourceSchedule"
       :availability="resourceAvailability"
+      @handleScheduleSubmit="postNewSchedule"
     />
   </div>
 </template>
@@ -36,7 +37,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetchTaskOptions", "handleSchedulePlacement", "handleResourceAvailability"]),
+    ...mapActions([
+      "fetchTaskOptions",
+      "handleSchedulePlacement",
+      "handleResourceAvailability",
+      "postNewSchedule"
+    ]),
     ...mapMutations({
       handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW,
       setResourceSchedule: types.MUTATE_RESOURCE_SCHEDULE

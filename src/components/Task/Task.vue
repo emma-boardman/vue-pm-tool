@@ -1,5 +1,5 @@
 <template>
-  <div :style="[taskInformation.style, generateTaskClasses(taskInformation)]">
+  <div :style="[taskInformation.styles, generateTaskClasses(taskInformation)]">
     <slot></slot>
   </div>
 </template>

@@ -3,12 +3,12 @@
     <router-link to="/pm">
       <header-logo></header-logo>
     </router-link>
-
+   
     <!-- <router-link :to="ustLink" exact> -->
     <router-link :to="isPM ? '/pm-unscheduledtasks' : '/client-unscheduledtasks'" exact>
       <div v-if="isPM">
         <header-notification v-if="unscheduledTasks.length >= 1" user="pm" unscheduledtasks="true" />
-        <header-notification v-else user="pm" :unscheduledtasks=false />
+        <header-notification v-else user="pm" unscheduledtasks="false" />
       </div>
       <div v-else>
         <header-notification
@@ -47,6 +47,9 @@ export default {
   created() {
     fetchUnscheduledTasks: this.$store.dispatch("fetchUnscheduledTasks");
   },
+  // updated() {
+  //   fetchUnscheduledTasks: this.$store.dispatch("fetchUnscheduledTasks");
+  // },
   methods: {
     ...mapActions(["fetchUnscheduledTasks"])
   },
@@ -74,6 +77,7 @@ header {
 
 a {
   text-decoration: none;
+  color: pink;
 }
 header h1 {
   margin-top: 9%;

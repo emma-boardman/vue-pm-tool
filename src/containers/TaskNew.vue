@@ -4,7 +4,8 @@
       class="modal-task-add"
       :projects="projectList"
       :resources="resourceList"
-      :closeModal="handleTaskAddModal"
+      @closeModal="handleTaskAddModal"
+      @handleNewTaskSubmit="postNewTask"
     ></task-new-task-add>
   </div>
 </template>
@@ -30,7 +31,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetchTaskOptions"]),
+    ...mapActions(["fetchTaskOptions", "postNewTask"]),
     ...mapMutations({ handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW })
   },
   components: {

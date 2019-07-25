@@ -41,8 +41,8 @@ export const store = {
         .post("http://40414669.wdd.napier.ac.uk/inc/postNewTask.php", task)
         .then(response => {
           console.log(response);
-          store.hideAddTaskForm();
-          this.fetchResourceTasks();
+          this.$store.dispatch("fetchUnscheduledTasks");
+          
         })
         .catch(error => console.log(error));
     },

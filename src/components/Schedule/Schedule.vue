@@ -3,7 +3,7 @@
     <p>{{task.taskTitle}}</p>
     <p>{{task.clientName}}</p>
 
-    <form @submit.prevent="handleScheduleSubmission(taskModel)">
+    <form @submit.prevent="handleScheduleSubmission(taskModel, resAvailability, taskId)">
       <ul class="form-wrapper">
         <li class="form-row">
           <label for="resourceId">Resource</label>
@@ -34,8 +34,8 @@
               <p>Requires resource and estimate input</p>
             </div>
             <div v-else class="timeslots">
-              <input readonly v-model="taskModel.startTime" :placeholder="availability.startTime" /> -
-              <input readonly v-model="taskModel.endTime" :placeholder="availability.endTime" />
+              <input readonly v-model="availability.startTime" :placeholder="availability.startTime" /> -
+              <input readonly v-model="availability.endTime" :placeholder="availability.endTime" />
             </div>
           </div>
         </li>
@@ -59,14 +59,29 @@ export default {
       taskModel: {
         resourceId: "",
         taskEstimate: "",
-        startTime: "",
-        endTime: ""
+        availability: {}
       }
     };
   },
+  computed: {
+    resAvailability: function() {
+      return this.availability
+    },
+    taskId: function() {
+      return this.task.taskId
+    }
+  },
    methods: {
-     handleScheduleSubmission: function(taskModel) {
-       console.log("in method: ", taskModel)
+     handleScheduleSubmission: function(taskModel, resAvailability, taskId) {
+       let updatedTaskModel = {
+         taskResource: taskModel.resourceId,
+         taskEstimate: taskModel.taskEstimate,
+         taskStartTime: resAvailability.startTime,
+         taskEndTime: resAvailability.endTime,
+         taskId: taskId
+       }
+       console.log("in method: ",  updatedTaskModel)
+       this.$emit("handleScheduleSubmit", updatedTaskModel);
      }
    }
 };

@@ -27,7 +27,7 @@
 export default {
   props: {
     user: String,
-    unscheduledtasks: String
+    unscheduledtasks: Array
   }
 };
 </script>

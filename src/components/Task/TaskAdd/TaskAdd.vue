@@ -68,7 +68,7 @@
       <div class="bottom-on-desktop">
         <add-task-button type="submit" class="add-task-btn">Add Task</add-task-button>
         <!-- <button type="submit" class="add-task-btn">Add Task</button> -->
-        <p class="cancel-btn" @click="closeForm">Cancel</p>
+        <p class="cancel-btn" @click="$emit('closeModal')">Cancel</p>
       </div>
     </form>
   </div>
@@ -103,13 +103,9 @@ export default {
   },
   methods: {
     handleFormSubmission: async function(task) {
-      var t0 = performance.now();
-      await store.postNewTask(task);
+      console.log("in hfs: ", task);
+      await this.$emit("handleNewTaskSubmit", task);
       this.clearFormFields();
-      var t1 = performance.now();
-      console.log(
-        "Call to handleFormSubmission took " + (t1 - t0) + " milliseconds."
-      );
     },
     clearFormFields: function() {
       var t0 = performance.now();
@@ -120,13 +116,6 @@ export default {
       console.log(
         "Call to clearFormFields took " + (t1 - t0) + " milliseconds."
       );
-    },
-    closeForm() {
-      var t0 = performance.now();
-      this.$emit("closeModal");
-      this.clearFormFields();
-      var t1 = performance.now();
-      console.log("Call to closeForm took " + (t1 - t0) + " milliseconds.");
     }
   }
 };
