@@ -29,7 +29,7 @@ import { EventBus } from "../../../event-bus.js";
 import { store } from "../../../utils/store.js";
 import axios from "axios";
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import * as types from '../../../store/types'
+import * as types from "../../../store/types";
 
 export default {
   props: {
@@ -48,24 +48,20 @@ export default {
     weeklyGridTask: Task
   },
   methods: {
-    ...mapMutations({ 
+    ...mapMutations({
       showTaskDetails: types.MUTATE_SHOW_TASK_DETAILS
     }),
     getCurrentDate: function() {
       return new Date();
     },
     getMonday: function() {
-      var t0 = performance.now();
       let currentDate = this.getCurrentDate(),
         currentDay = currentDate.getDay(),
         diff = currentDate.getDate() - currentDay + (currentDay == 0 ? -6 : 1),
         monday = new Date(currentDate.setDate(diff));
-      var t1 = performance.now();
-      console.log("Call to getMonday took " + (t1 - t0) + " milliseconds.");
       return monday;
     },
     getWeeklyArray: function() {
-      var t0 = performance.now();
       let monday = this.getMonday(),
         currentWeek = [];
       const months = [
@@ -97,8 +93,6 @@ export default {
           months[tempDate.getMonth()];
         currentWeek.push(dateString);
       }
-      var t1 = performance.now();
-      console.log("Call to getWeeklyArray took " + (t1 - t0) + " milliseconds.");
       return currentWeek;
     },
     getDateOrdinal: function(date) {
@@ -115,16 +109,11 @@ export default {
       }
     },
     addMargin: function(endDayTime) {
-      var t0 = performance.now();
       if (endDayTime.includes("1700")) {
-        console.log("true");
-        var t1 = performance.now();
-      console.log("Call to addMargin took " + (t1 - t0) + " milliseconds.");
         return "marginRight: 5px";
       }
     },
     generateTaskClasses(task) {
-      var t0 = performance.now();
       let marginRight;
       task.taskEndTime.includes(1700)
         ? (marginRight = "5px")
@@ -137,8 +126,6 @@ export default {
         marginRight: marginRight,
         zIndex: 2
       };
-      var t1 = performance.now();
-      console.log("Call to generateTaskClasses took " + (t1 - t0) + " milliseconds.");
       return dynamicStyles;
     }
   }

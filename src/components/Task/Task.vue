@@ -18,7 +18,6 @@ export default {
   },
   methods: {
 generateTaskClasses: function(task) {
-		var t0 = performance.now();
 		let color;
 		switch (task.clientName) {
 		  case "Delos":
@@ -40,10 +39,6 @@ generateTaskClasses: function(task) {
 		let dynamicStyles = {
 		  backgroundColor: color,
 		};
-		var t1 = performance.now();
-		console.log(
-		  "Call to generateTaskClasses took " + (t1 - t0) + " milliseconds."
-		);
 		return dynamicStyles;
     }
     }

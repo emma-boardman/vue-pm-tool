@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     generateClientColourClasses(clientName) {
-      var t0 = performance.now();
       let color;
       switch (clientName) {
         case "Client A":
@@ -53,12 +52,9 @@ export default {
       let backgroundColor = {
         backgroundColor: color
       };
-      var t1 = performance.now();
-console.log("Call to generateClientColourClasses took " + (t1 - t0) + " milliseconds.");
       return backgroundColor;
     },
     generateImpactColourClasses(impact) {
-      var t0 = performance.now();
       let color;
       switch (impact) {
         case "low":
@@ -74,8 +70,6 @@ console.log("Call to generateClientColourClasses took " + (t1 - t0) + " millisec
       let backgroundColor = {
         backgroundColor: color
       };
-      var t1 = performance.now();
-console.log("Call to generateImpactColourClasses took " + (t1 - t0) + " milliseconds.");
       return backgroundColor;
     }
   }

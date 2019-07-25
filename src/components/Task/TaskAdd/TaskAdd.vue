@@ -108,14 +108,9 @@ export default {
       this.clearFormFields();
     },
     clearFormFields: function() {
-      var t0 = performance.now();
       Object.keys(this.task).forEach(key => {
         this.task[key] = "";
       });
-      var t1 = performance.now();
-      console.log(
-        "Call to clearFormFields took " + (t1 - t0) + " milliseconds."
-      );
     }
   }
 };

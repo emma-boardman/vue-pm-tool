@@ -2,7 +2,7 @@ import * as types from "../types";
 const ResourceRepository = RepositoryFactory.get("resources");
 const TaskRepository = RepositoryFactory.get("tasks");
 import { RepositoryFactory } from "../../utils/RepositoryFactory";
-import axios from 'axios'
+import axios from "axios";
 
 const state = {
   tasks: [],
@@ -72,9 +72,13 @@ const mutations = {
     state.isTaskOptionsLoading = loading;
   },
   [types.MUTATE_SHOW_TASK_NEW]: state => {
+    var t0 = performance.now();
     state.showTaskNew = !state.showTaskNew;
+    var t1 = performance.now();
+    console.log("Call to toggleTaskNew took " + (t1 - t0) + " milliseconds.");
   },
   [types.MUTATE_SHOW_TASK_DETAILS]: (state, task) => {
+    var t0 = performance.now();
     if (!state.showTaskDetails) {
       state.showTaskDetails = !state.showTaskDetails;
       state.selectedTask = task;
@@ -95,6 +99,10 @@ const mutations = {
         clientName: "n/a"
       };
     }
+    var t1 = performance.now();
+    console.log(
+      "Call to toggleTaskDetails took " + (t1 - t0) + " milliseconds."
+    );
   },
   [types.MUTATE_UNSCHEDULED_TASKS]: (state, tasks) => {
     state.unscheduledTasks = tasks;
@@ -165,19 +173,25 @@ const actions = {
     console.log("fetch ust response", data);
     commit(types.MUTATE_UNSCHEDULED_TASKS, data.data);
   },
-  async postNewTask({commit}, task){
+  async postNewTask({ commit }, task) {
+    var t0 = performance.now();
     axios
-    .post("http://40414669.wdd.napier.ac.uk/inc/postNewTask.php", task)
-    .then(response => {
-      console.log(response);
-      commit(types.MUTATE_SHOW_TASK_NEW);
-      actions.fetchUnscheduledTasks({commit});
-    })
-    .catch(error => console.log(error));
+      .post("http://40414669.wdd.napier.ac.uk/inc/postNewTask.php", task)
+      .then(response => {
+        console.log(response);
+        commit(types.MUTATE_SHOW_TASK_NEW);
+        actions.fetchUnscheduledTasks({ commit });
+        var t1 = performance.now();
+        console.log("Call to postNewTask took " + (t1 - t0) + " milliseconds.");
+      })
+      .catch(error => console.log(error));
   },
   async postNewSchedule({ commit }, schedule) {
     axios
-      .post("http://40414669.wdd.napier.ac.uk/inc/postTaskSchedule.php", schedule)
+      .post(
+        "http://40414669.wdd.napier.ac.uk/inc/postTaskSchedule.php",
+        schedule
+      )
       .then(response => {
         console.log(schedule, response);
         commit(types.MUTATE_SHOW_SCHEDULING_COMPONENT);
