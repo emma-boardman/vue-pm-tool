@@ -9,5 +9,8 @@ export default {
     },
     getResourceSchedule(resourceId) {
         return Repository.get(`/readResourceSchedule.php/?id=${resourceId}`);
-    }
+    },
+    getClientResourceTasks() {
+        return Repository.get(`/readClientTasks.php`);
+    },
 };

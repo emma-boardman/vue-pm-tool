@@ -22,5 +22,6 @@ footer {
 		position: fixed;
 		height: 7vh;
 		width: 100%;
+		z-index: 3;
 	}
 </style>

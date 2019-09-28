@@ -9,8 +9,9 @@
     <weekly-grid-task
       v-for="task in tasks"
       :key="task.taskId"
+      :taskInformation="task"
       class="task"
-      @click.native="emitTaskDetails(task)"
+      @click.native="showTaskDetails(task)"
       :style="generateTaskClasses(task)"
     >
       <p class="clientName" v-if="task.taskEstimate > 3">{{ task.clientName }}</p>
@@ -27,6 +28,8 @@ import Task from "../../Task/Task.vue";
 import { EventBus } from "../../../event-bus.js";
 import { store } from "../../../utils/store.js";
 import axios from "axios";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from "../../../store/types";
 
 export default {
   props: {
@@ -45,21 +48,20 @@ export default {
     weeklyGridTask: Task
   },
   methods: {
+    ...mapMutations({
+      showTaskDetails: types.MUTATE_SHOW_TASK_DETAILS
+    }),
     getCurrentDate: function() {
       return new Date();
     },
     getMonday: function() {
-      var t0 = performance.now();
       let currentDate = this.getCurrentDate(),
         currentDay = currentDate.getDay(),
         diff = currentDate.getDate() - currentDay + (currentDay == 0 ? -6 : 1),
         monday = new Date(currentDate.setDate(diff));
-      var t1 = performance.now();
-      console.log("Call to getMonday took " + (t1 - t0) + " milliseconds.");
       return monday;
     },
     getWeeklyArray: function() {
-      var t0 = performance.now();
       let monday = this.getMonday(),
         currentWeek = [];
       const months = [
@@ -91,8 +93,6 @@ export default {
           months[tempDate.getMonth()];
         currentWeek.push(dateString);
       }
-      var t1 = performance.now();
-      console.log("Call to getWeeklyArray took " + (t1 - t0) + " milliseconds.");
       return currentWeek;
     },
     getDateOrdinal: function(date) {
@@ -109,46 +109,16 @@ export default {
       }
     },
     addMargin: function(endDayTime) {
-      var t0 = performance.now();
       if (endDayTime.includes("1700")) {
-        console.log("true");
-        var t1 = performance.now();
-      console.log("Call to addMargin took " + (t1 - t0) + " milliseconds.");
         return "marginRight: 5px";
       }
     },
-    emitTaskDetails: function(task) {
-      var t0 = performance.now();
-      EventBus.$emit("showTaskDetails", task);
-      var t1 = performance.now();
-      console.log("Call to emitTaskDetails took " + (t1 - t0) + " milliseconds.");
-    },
     generateTaskClasses(task) {
-      var t0 = performance.now();
-      let color;
-      switch (task.clientName) {
-        case "Delos":
-          color = "#C6F400";
-          break;
-        case "Shogun World":
-          color = "#F48A18";
-          break;
-        case "Ford":
-          color = "#B087FF";
-          break;
-        case "Logan":
-          color = "#1DA4C1";
-          break;
-        default:
-          color = "#1DA4C1";
-          break;
-      }
       let marginRight;
       task.taskEndTime.includes(1700)
         ? (marginRight = "5px")
         : (marginRight = "0");
       let dynamicStyles = {
-        backgroundColor: color,
         gridColumnStart: task.taskStartTime,
         gridRowStart: "row1-start",
         gridRowEnd: "row1-end",
@@ -156,8 +126,6 @@ export default {
         marginRight: marginRight,
         zIndex: 2
       };
-      var t1 = performance.now();
-      console.log("Call to generateTaskClasses took " + (t1 - t0) + " milliseconds.");
       return dynamicStyles;
     }
   }

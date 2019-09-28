@@ -3,166 +3,88 @@
     <layout-modal
       :if="isAddTaskFormShowing"
       :showModal="isAddTaskFormShowing"
-      @closeModal="handleTaskAddModalClose"
+      @closeModal="handleTaskAddModal"
     >
-      <layout-task-add
-        class="modal-task-add"
-        :projects="this.projectsList"
-        :resources="this.resourceList"
-        @submitNewTask="handleFormSubmission"
-        @handleEstimate="fetchResourceSchedule"
-        @closeModal="handleTaskAddModalClose"
-        :availableTimes="{startTime: this.firstAvailableStartTime, endTime: this.firstAvailableEndTime}"
-      ></layout-task-add>
+      <layout-task-new />
     </layout-modal>
     <layout-modal
       :if="isTaskDetailShowing"
-      @closeModal="handleTaskDetailModalClose"
+      @closeModal="handleTaskDetailModal"
       :showModal="isTaskDetailShowing"
       class="modal-task-detail"
     >
-      <layout-task-detail :task="taskDetail" @closeModal="handleTaskDetailModalClose"></layout-task-detail>
+      <layout-task-detail :task="selectedTask" @closeModal="handleTaskDetailModal"></layout-task-detail>
     </layout-modal>
     <layout-header></layout-header>
-    <layout-calendar></layout-calendar>
+    <div v-if="isUnscheduledTaskView">
+      <layout-unscheduled-tasks :user="isPM ? 'pm' : 'client'"/>
+    </div>
+    <div v-else>
+      <layout-calendar />
+    </div>
     <layout-footer></layout-footer>
   </div>
 </template>
 
 <script>
-import Header from "../components/Header/Header.vue";
+import Header from "../containers/Header";
 import Calendar from "../components/Calendar/Calendar.vue";
 import Footer from "../components/Footer/Footer.vue";
 import Modal from "../components/UI/Modal/Modal.vue";
-import TaskAdd from "../components/Task/TaskAdd/TaskAdd.vue";
+import TaskNew from "../containers/TaskNew";
 import TaskDetail from "../components/Task/TaskDetail/TaskDetail.vue";
-import { EventBus } from "../event-bus.js";
-import { store } from "../utils/store.js";
+import UnscheduledTasks from "../containers/UnscheduledTasks.vue";
 import axios from "axios";
 import { RepositoryFactory } from "../utils/RepositoryFactory";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import * as types from "../store/types";
+
 const ResourceRepository = RepositoryFactory.get("resources");
 const TaskRepository = RepositoryFactory.get("tasks");
 
 export default {
   data: function() {
     return {
-      store,
-      isResourceTasksLoading: store.state.isResourceTasksLoading,
-      isTaskFormPresetsLoading: store.state.isTaskFormPresetsLoading,
-      projectsList: store.state.projectsList,
-      resourceList: store.state.resourceList,
-      taskDetail: {},
-      resourceSchedule: {},
       firstAvailableStartTime: "",
       firstAvailableEndTime: ""
     };
   },
   computed: {
-    isAddTaskFormShowing: function() {
-      return store.state.modalControls.isAddTaskFormShowing;
+    ...mapGetters({
+      isAddTaskFormShowing: types.SHOW_TASK_NEW,
+      isTaskDetailShowing: types.SHOW_TASK_DETAILS,
+      selectedTask: types.SELECTED_TASK
+    }),
+    isUnscheduledTaskView: function() {
+      if (this.$route.path.includes("unscheduledtasks")) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    isTaskDetailShowing: function() {
-      return store.state.modalControls.isTaskDetailShowing;
+    isPM: function() {
+      if (this.$route.path.includes("pm")) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
-  created() {
-    EventBus.$on("showTaskDetails", this.handleTaskDetailsModalOpen);
-    store.fetchResourceTasks();
-    this.fetchTaskFormPresets();
-  },
+  created() {},
   components: {
     layoutHeader: Header,
     layoutCalendar: Calendar,
     layoutFooter: Footer,
     layoutModal: Modal,
-    layoutTaskAdd: TaskAdd,
-    layoutTaskDetail: TaskDetail
+    layoutTaskNew: TaskNew,
+    layoutTaskDetail: TaskDetail,
+    layoutUnscheduledTasks: UnscheduledTasks
   },
   methods: {
-    async fetchTaskFormPresets() {
-      var t0 = performance.now();
-      this.isTaskFormPresetsLoading = true;
-      const { data } = await TaskRepository.getTaskFormPresets();
-      console.log(data);
-      this.isTaskFormPresetsLoading = false;
-      this.projectsList = data["clientProjects"];
-      this.resourceList = data["resources"];
-      this.handleTaskPresets();
-    },
-    async fetchResourceSchedule(resourceAndEstimate) {
-      var t0 = performance.now();
-      this.isResourceScheduleLoading = true;
-      const { data } = await ResourceRepository.getResourceSchedule(
-        resourceAndEstimate.resourceId
-      );
-      this.isResourceScheduleLoading = false;
-      this.resourceSchedule = data;
-      this.handleResourceAvailability(resourceAndEstimate);
-      var t1 = performance.now();
-      console.log(
-        "Call to fetchTaskFormPresets took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    handleTaskPresets: function() {
-      var t0 = performance.now();
-      let projectsArray = this.projectsList.reduce(function(
-        formPresetsArray,
-        clientObj
-      ) {
-        for (let j = 0; j < clientObj.projects.length; j++) {
-          let clientObject = {
-            clientName: clientObj.clientName,
-            projectName: clientObj.projects[j].projectTitle,
-            projectId: clientObj.projects[j].projectId
-          };
-          formPresetsArray.push(clientObject);
-        }
-        return formPresetsArray;
-      },
-      []);
-      this.projectsList = projectsArray;
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskPresets took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    handleTaskAddModalClose: function() {
-      var t0 = performance.now();
-      store.hideAddTaskForm();
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskAddModalClose took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    handleTaskAddModalOpen: function() {
-      var t0 = performance.now();
-      this.showTaskAdd = true;
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskAddModalOpen took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    handleTaskDetailsModalOpen: function(task) {
-      var t0 = performance.now();
-      store.state.modalControls.isTaskDetailShowing = true;
-      this.taskDetail = task;
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskDetailsModalOpen took " +
-          (t1 - t0) +
-          " milliseconds."
-      );
-    },
-    handleTaskDetailModalClose: function() {
-      var t0 = performance.now();
-      store.hideTaskDetail();
-      var t1 = performance.now();
-      console.log(
-        "Call to handleTaskDetailModalClose took " +
-          (t1 - t0) +
-          " milliseconds."
-      );
-    },
+    ...mapMutations({
+      handleTaskAddModal: types.MUTATE_SHOW_TASK_NEW,
+      handleTaskDetailModal: types.MUTATE_SHOW_TASK_DETAILS
+    }),
     handleFormSubmission: function(task) {
       var t0 = performance.now();
       console.log(task);
@@ -174,100 +96,6 @@ export default {
       );
       // this.firstAvailableStartTime ='';
       // this.firstAvailableEndTime ='';
-    },
-    handleResourceAvailability: function(resourceAndEstimate) {
-      var t0 = performance.now();
-      const weeklyAvailability = Array(45).fill(true);
-      const weeklyTimeSlots = [
-        "Mon0900",
-        "Mon1000",
-        "Mon1100",
-        "Mon1200",
-        "Mon1300",
-        "Mon1400",
-        "Mon1500",
-        "Mon1600",
-        "Mon1700",
-        "Tues0900",
-        "Tues1000",
-        "Tues1100",
-        "Tues1200",
-        "Tues1300",
-        "Tues1400",
-        "Tues1500",
-        "Tues1600",
-        "Tues1700",
-        "Wed0900",
-        "Wed1000",
-        "Wed1100",
-        "Wed1200",
-        "Wed1300",
-        "Wed1400",
-        "Wed1500",
-        "Wed1600",
-        "Wed1700",
-        "Thurs0900",
-        "Thurs1000",
-        "Thurs1100",
-        "Thurs1200",
-        "Thurs1300",
-        "Thurs1400",
-        "Thurs1500",
-        "Thurs1600",
-        "Thurs1700",
-        "Fri0900",
-        "Fri1000",
-        "Fri1100",
-        "Fri1200",
-        "Fri1300",
-        "Fri1400",
-        "Fri1500",
-        "Fri1600",
-        "Fri1700"
-      ];
-      if (this.resourceSchedule.length > 0) {
-        for (let n = 0; n < this.resourceSchedule.length; n++) {
-          const startTime = this.resourceSchedule[n].taskStartTime;
-          const estimatedTime = this.resourceSchedule[n].taskEstimate;
-          for (let i = 0; i < weeklyTimeSlots.length; i++) {
-            if (weeklyTimeSlots[i] == startTime) {
-              for (let j = 0; j < estimatedTime; j++) {
-                weeklyAvailability[i + j] = false;
-              }
-            }
-          }
-        }
-      }
-      console.log(weeklyAvailability);
-      const estimateArray = Array(resourceAndEstimate.taskEstimate).fill(true);
-      let indexOfFirstAvailability = this.findAvailability(
-        weeklyAvailability,
-        estimateArray
-      );
-      this.firstAvailableStartTime = weeklyTimeSlots[indexOfFirstAvailability];
-      const endTime =
-        parseInt(indexOfFirstAvailability) +
-        parseInt(resourceAndEstimate.taskEstimate);
-      this.firstAvailableEndTime = weeklyTimeSlots[endTime];
-      var t1 = performance.now();
-      console.log(
-        "Call to handleResourceAvailability took " +
-          (t1 - t0) +
-          " milliseconds."
-      );
-    },
-    findAvailability(arr, subarr) {
-      var t0 = performance.now();
-      for (var i = 0; i < 1 + (arr.length - subarr.length); i++) {
-        var j = 0;
-        for (; j < subarr.length; j++) if (arr[i + j] !== subarr[j]) break;
-        if (j == subarr.length) return i;
-      }
-      var t1 = performance.now();
-      console.log(
-        "Call to findAvailability took " + (t1 - t0) + " milliseconds."
-      );
-      return -1;
     }
   }
 };

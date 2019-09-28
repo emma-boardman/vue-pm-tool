@@ -1,15 +1,19 @@
 <template>
   <div class="app">
-    <app-layout></app-layout>
+    <router-view />
+    <!-- <app-layout></app-layout> -->
+    <!-- <app-auth></app-auth> -->
   </div>
 </template>
 
 <script>
 import Layout from './containers/Layout.vue'
+import Auth from './containers/Auth.vue'
 
 export default {
   components: {
-    appLayout: Layout
+    appLayout: Layout,
+    appAuth: Auth
   }
 }
 

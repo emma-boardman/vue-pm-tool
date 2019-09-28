@@ -62,52 +62,13 @@
               <label for="taskRecentChanges">Recent Changes</label>
               <input type="text" id="taskRecentChanges" v-model="task.taskRecentChanges" required />
             </li>
-            <li class="form-row">
-              <label for="resourceId">Resource</label>
-              <select id="resourceId" v-model="task.taskResource" required>
-                <option
-                  v-for="resource in resources"
-                  :key="resource.resourceId"
-                  :value="resource.resourceId"
-                >{{ resource.resourceName }}</option>
-              </select>
-            </li>
-            <li class="form-row">
-              <label for="taskEstimate">Estimate (hours)</label>
-              <input
-                type="number"
-                id="taskEstimate"
-                v-model="task.taskEstimate"
-                @blur="$emit('handleEstimate', {resourceId: task.taskResource, taskEstimate: task.taskEstimate})"
-                required
-              />
-            </li>
-            <li class="form-row">
-              <label for="taskSchedule">First Available Time Slot</label>
-              <div>
-                <div v-if="availableTimes.endTime === ''">
-                  <p>Requires resource and estimate input</p>
-                </div>
-                <div v-else class="timeslots">
-                  <input
-                    readonly
-                    v-model="availableTimes.startTime"
-                    :placeholder="availableTimes.startTime"
-                  /> -
-                  <input
-                    readonly
-                    v-model="availableTimes.endTime"
-                    :placeholder="availableTimes.endTime"
-                  />
-                </div>
-              </div>
-            </li>
           </ul>
         </div>
       </div>
       <div class="bottom-on-desktop">
-        <button type="submit" class="add-task-btn">Add Task</button>
-        <p class="cancel-btn" @click="closeForm">Cancel</p>
+        <add-task-button type="submit" class="add-task-btn">Add Task</add-task-button>
+        <!-- <button type="submit" class="add-task-btn">Add Task</button> -->
+        <p class="cancel-btn" @click="$emit('closeModal')">Cancel</p>
       </div>
     </form>
   </div>
@@ -115,11 +76,11 @@
 
 <script>
 import { store } from "../../../utils/store.js";
+import Button from "../../UI/Button/Button";
 
 export default {
   props: {
     resources: Array,
-    availableTimes: Object,
     projects: Array
   },
   data() {
@@ -133,46 +94,23 @@ export default {
         taskImpact: "low",
         taskTimeNoticed: "",
         taskRecentChanges: "",
-        taskResource: "",
-        taskEstimate: "",
-        taskStartTime: "",
-        taskEndTime: ""
       },
       impactOptions: ["Low", "Medium", "High"]
     };
   },
-  watch: {
-    availableTimes: function(newVal, oldVal) {
-      this.task.taskStartTime = newVal.startTime;
-      this.task.taskEndTime = newVal.endTime;
-    }
+  components: {
+    AddTaskButton: Button
   },
   methods: {
     handleFormSubmission: async function(task) {
-      var t0 = performance.now();
-      await store.postNewTask(task);
+      console.log("in hfs: ", task);
+      await this.$emit("handleNewTaskSubmit", task);
       this.clearFormFields();
-      var t1 = performance.now();
-      console.log(
-        "Call to handleFormSubmission took " + (t1 - t0) + " milliseconds."
-      );
     },
     clearFormFields: function() {
-      var t0 = performance.now();
       Object.keys(this.task).forEach(key => {
         this.task[key] = "";
       });
-      var t1 = performance.now();
-      console.log(
-        "Call to clearFormFields took " + (t1 - t0) + " milliseconds."
-      );
-    },
-    closeForm() {
-      var t0 = performance.now();
-      this.$emit("closeModal");
-      this.clearFormFields();
-      var t1 = performance.now();
-      console.log("Call to closeForm took " + (t1 - t0) + " milliseconds.");
     }
   }
 };
